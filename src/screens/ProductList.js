@@ -7,14 +7,15 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function ProductList() {
   categories = ["Electronics", "Jewelry", "Men's Clothing", "Women's Clothing"];
-  handlePress = (category) => {
-    console.log(`Category pressed: ${category}`);
+  handlePress = () => {
+    console.log("product pressed");
   };
-  handleBack = () =>{
-    console.log('back button pressed')
+  handleBack = () => {
+    console.log("back button pressed");
   };
   return (
     <View style={styles.container}>
@@ -32,13 +33,11 @@ export default function ProductList() {
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => handlePress(item)}
+              onPress={() => handlePress()}
               style={styles.catListBox}
             >
               <View style={styles.itemBox}>
-                <View style={styles.imageBox}>
-
-                </View>
+                <View style={styles.imageBox}></View>
                 <Text style={styles.catListText}>{item}</Text>
               </View>
             </TouchableOpacity>
@@ -46,12 +45,13 @@ export default function ProductList() {
         />
       </View>
       <View style={styles.bottom}>
-          <TouchableOpacity
-          onPress={() => handlePress(item)}
-              style={styles.backButton}>
-                
-                <Text>Back</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleBack()}
+          style={styles.backButton}
+        >
+          <Ionicons name="backspace" size={30} color="#000" />
+          <Text>Back</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "flex-start",
     width: "80%",
-    height: "85%",
+    height: "78%",
     // marginTop: "2%",
   },
   catListBox: {
@@ -102,24 +102,37 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   catListText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
   // item
-  itemBox:{
-    borderWidth:1,
-    flexDirection:'row',
-    padding:5,
-    gap:10,
+  itemBox: {
+    borderWidth: 1,
+    flexDirection: "row",
+    padding: 5,
+    gap: 10,
   },
-  imageBox:{
-    borderWidth:1,
-    width:'25%',
-    aspectRatio:1,
+  imageBox: {
+    borderWidth: 1,
+    width: "25%",
+    aspectRatio: 1,
   },
   // bottom
-  bottom:{
-    width:'100%',
-  }
+  bottom: {
+    borderWidth: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  backButton: {
+    borderWidth: 1,
+    padding: 10,
+    borderRadius:10,
+    width:'50%',
+    backgroundColor: "red",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
