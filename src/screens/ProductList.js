@@ -13,6 +13,9 @@ export default function ProductList() {
   handlePress = (category) => {
     console.log(`Category pressed: ${category}`);
   };
+  handleBack = () =>{
+    console.log('back button pressed')
+  };
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
@@ -41,6 +44,14 @@ export default function ProductList() {
             </TouchableOpacity>
           )}
         />
+      </View>
+      <View style={styles.bottom}>
+          <TouchableOpacity
+          onPress={() => handlePress(item)}
+              style={styles.backButton}>
+                
+                <Text>Back</Text>
+          </TouchableOpacity>
       </View>
     </View>
   );
@@ -91,9 +102,9 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   catListText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 18,
-    textAlign: "center",
+    textAlign: 'center',
   },
   // item
   itemBox:{
@@ -106,5 +117,9 @@ const styles = StyleSheet.create({
     borderWidth:1,
     width:'25%',
     aspectRatio:1,
+  },
+  // bottom
+  bottom:{
+    width:'100%',
   }
 });
