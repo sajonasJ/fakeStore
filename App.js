@@ -4,13 +4,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Splash from "./src/screens/Splash";
 import Category from "./src/screens/Catergory";
 import ProductList from "./src/screens/ProductList";
+import ProductDetail from "./src/screens/ProductDetail";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ProductList">
+      <Stack.Navigator initialRouteName="ProductDetail">
         <Stack.Screen
           name="Splash"
           component={Splash}
@@ -24,6 +25,11 @@ export default function App() {
         <Stack.Screen
           name="ProductList"
           component={ProductList}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ProductDetail"
+          component={ProductDetail}
           // options={{ headerShown: false }}
         />
       </Stack.Navigator>
