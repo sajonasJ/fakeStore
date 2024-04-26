@@ -8,38 +8,30 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { fetchProducts } from "../service/fakeStoreAPI";
 import { useNavigation } from "@react-navigation/native";
 import CsBtn from "../components/CsBtn";
+import Header from "../components/Header";
 
 export default function ProductList({ route }) {
-  const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
-    fetchProducts().then((data) => {
-      setProducts(data);
-      const { category } = route.params;
-      setCategory(category);
-      const lcCategory = category.toLowerCase();
-      const filtered = data.filter(
-        (product) => product.category.toLowerCase() === lcCategory
-      );
-      setFilteredProducts(filtered);
-    });
+    const { category, products } = route.params;
+    setCategory(category);
+    const lcCategory = category.toLowerCase();
+    const filtered = products.filter(
+      (product) => product.category.toLowerCase() === lcCategory
+    );
+    setFilteredProducts(filtered);
   }, []);
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerBox}>
-          <Text style={styles.headerTxt}>{category}</Text>
-        </View>
-      </View>
+      <Header title={category}/>
       {/* Product Categories */}
       <View style={styles.catList}>
         <FlatList
@@ -85,22 +77,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: "100%",
     marginTop: 55,
-  },
-  //header
-  header: {
-    width: "100%",
-    alignItems: "center",
-  },
-  headerBox: {
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "black",
-    padding: 17,
-  },
-  headerTxt: {
-    fontSize: 40,
-    fontWeight: "bold",
-    color: "white",
   },
   //category list
   catList: {

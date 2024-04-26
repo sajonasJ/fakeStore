@@ -7,7 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { fetchProducts } from "../service/fakeStoreAPI";
+import  fetchProducts  from "../service/fakeStoreAPI";
+import Header from "../components/Header";
 
 export default function Category({navigation}) {
   const [products, setProducts] = useState([]);
@@ -28,18 +29,14 @@ export default function Category({navigation}) {
   }, []);
 
   const handlePress = (category) => {
-    navigation.navigate('ProductList', { category });
+    navigation.navigate('ProductList', { category, products });
   };
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerBox}>
-          <Text style={styles.headerTxt}>Categories</Text>
-        </View>
-      </View>
+      <Header title='Categories'/>
       {/* Product Categories */}
       <View style={styles.catList}>
         <FlatList

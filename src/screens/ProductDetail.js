@@ -10,6 +10,7 @@ import {
 import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
 import CsBtn from "../components/CsBtn";
+import Header from "../components/Header";
 
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
@@ -31,12 +32,7 @@ export default function ProductDetail({ route, navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerBox}>
-          <Text style={styles.headerTxt}>Product Details</Text>
-        </View>
-      </View>
+      <Header title='Product Deails'/>
       {/* Product Details */}
       <View style={styles.prodList}>
         <Image source={{ uri: image }} style={styles.prodImg} />

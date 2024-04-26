@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function CsBtn({ onPress, iconName, children, color }) {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.detailBtn, {backgroundColor: color}]}>
-      <Ionicons 
-      name={iconName} 
-      size={30} 
-      color="#000" />
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.detailBtn, { backgroundColor: color }]}
+    >
+      <Ionicons name={iconName} size={30} color="#000" />
       <Text style={styles.btnTxt}>{children}</Text>
     </TouchableOpacity>
   );
