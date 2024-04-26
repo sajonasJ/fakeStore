@@ -18,17 +18,17 @@ const splashImage = require("../public/splash.png");
 export default function Splash({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-
+//navigate to category page
   const handlePress = () => {
     navigation.navigate("Category");
   };
-
+//setImage to false
   const handleImageLoad = () => {
     setIsLoading(false);
   };
+  //set the button to true when image finishes loading
   const handleBtn = () => {
     setIsVisible(true);
-    console.log(isVisible);
   };
 
   return (

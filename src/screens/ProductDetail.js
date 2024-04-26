@@ -19,10 +19,11 @@ export default function ProductDetail({ route, navigation }) {
   const { title, rating, price, description, image } = route.params;
   const [isLoading, setIsLoading] = useState(true);
 
+//set image loading to false
   const handleImageLoad = () => {
     setIsLoading(false);
   };
-
+//show toast with message
   const handleCart = () => {
     Toast.show({
       type: "success",

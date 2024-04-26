@@ -17,6 +17,7 @@ export default function Category({ navigation }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // capitalise first letter of strings
   function capFirstLetter(string) {
     return string
       .split(" ")
@@ -24,17 +25,19 @@ export default function Category({ navigation }) {
       .join(" ");
   }
 
+  //get data grom api
   useEffect(() => {
     fetchProducts().then((data) => {
       setProducts(data);
+      //make new array with capitalised letters
       const uniqueCategories = [
         ...new Set(data.map((item) => capFirstLetter(item.category))),
       ];
       setCategories(uniqueCategories);
-      setIsLoading(false); // Move this inside the then() block
+      setIsLoading(false);
     });
   }, []);
-
+  // push category and products to next page
   const handlePress = (category) => {
     navigation.navigate("ProductList", { category, products });
   };
