@@ -6,6 +6,7 @@ import Category from "./src/screens/Catergory";
 import ProductList from "./src/screens/ProductList";
 import ProductDetail from "./src/screens/ProductDetail";
 import Toast from "react-native-toast-message";
+import { colours as c } from "./src/constants/constants";
 
 const Stack = createStackNavigator();
 
@@ -13,7 +14,14 @@ export default function App() {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Category">
+        <Stack.Navigator
+          initialRouteName="Splash"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: c.bkgcol,
+            },
+          }}
+        >
           <Stack.Screen
             name="Splash"
             component={Splash}
@@ -44,7 +52,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: c.bkgcol,
     alignItems: "center",
     justifyContent: "center",
   },

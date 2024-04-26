@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { fontSize as f, colours as c } from '../constants/constants';
 
 export default function Header({ title }) {
   return (
@@ -18,11 +19,11 @@ header: {
   headerBox: {
     width: "100%",
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: c.aiCol,
     padding: 17,
   },
   headerTxt: {
-    fontSize: 40,
+    fontSize: f.xxl,
     fontWeight: "bold",
     color: "white",
   },

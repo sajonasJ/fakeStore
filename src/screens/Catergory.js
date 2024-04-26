@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   StatusBar,
   View,
@@ -8,42 +8,50 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import  fetchProducts  from "../service/fakeStoreAPI";
+import fetchProducts from "../service/fakeStoreAPI";
 import Header from "../components/Header";
+import { fontSize as f, colours as c } from '../constants/constants';
 
-export default function Category({navigation}) {
+export default function Category({ navigation }) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   function capFirstLetter(string) {
-    return string.split(' ')
-    .map(word => word.charAt(0)
-    .toUpperCase() + word.slice(1)).join(' ');
+    return string
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   }
 
   useEffect(() => {
-    fetchProducts().then(data => {
+    fetchProducts().then((data) => {
       setProducts(data);
-      const uniqueCategories = [...new Set(data.map(item => capFirstLetter(item.category)))];      
+      const uniqueCategories = [
+        ...new Set(data.map((item) => capFirstLetter(item.category))),
+      ];
       setCategories(uniqueCategories);
+      setIsLoading(false); // Move this inside the then() block
     });
-    setIsLoading(false);
   }, []);
 
   const handlePress = (category) => {
-    navigation.navigate('ProductList', { category, products });
+    navigation.navigate("ProductList", { category, products });
   };
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
       {/* Header */}
-      <Header title='Categories'/>
+      <Header title="Categories" />
       {/* Product Categories */}
       <View style={styles.catList}>
         {isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator
+            size="large"
+            color={c.aiCol}
+            style={styles.activityIndicator}
+          />
         ) : (
           <FlatList
             data={categories}
@@ -69,9 +77,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
-    backgroundColor: "#fff",
-    width:'100%',
-    marginTop:55,
+    backgroundColor: c.bkgcol,
+    width: "100%",
+    marginTop: 55,
+  },
+  activityIndicator: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   //header
   header: {
@@ -85,20 +102,20 @@ const styles = StyleSheet.create({
     padding: 17,
   },
   headerTxt: {
-    fontSize: 40,
+    fontSize: f.xxl,
     fontWeight: "bold",
     color: "white",
   },
   //category list
   catList: {
-    backgroundColor: "white",
+    backgroundColor: c.bkgcol,
     justifyContent: "flex-start",
     width: "100%",
     height: "85%",
   },
   catListBox: {
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: c.bkgcol,
     padding: 35,
     marginVertical: 8,
     shadowColor: "rgba(60, 64, 67, 1)",
@@ -112,7 +129,7 @@ const styles = StyleSheet.create({
   },
   catListText: {
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: f.medL,
     textAlign: "center",
   },
 });

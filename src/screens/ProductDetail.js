@@ -12,6 +12,7 @@ import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
 import CsBtn from "../components/CsBtn";
 import Header from "../components/Header";
+import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
@@ -19,7 +20,7 @@ export default function ProductDetail({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleImageLoad = () => {
-      setIsLoading(false);
+    setIsLoading(false);
   };
 
   const handleCart = () => {
@@ -29,14 +30,14 @@ export default function ProductDetail({ route, navigation }) {
       text1: "Added to Cart!",
       text1Style: {
         textAlign: "center",
-        fontSize: 20,
+        fontSize: f.large,
       },
       swipeable: true,
       bottomOffset: windowHeight / 3,
       visibilityTime: 1000,
     });
   };
-  
+
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
@@ -45,7 +46,7 @@ export default function ProductDetail({ route, navigation }) {
       <View style={styles.prodList}>
         {isLoading && (
           <View style={styles.aiBox}>
-            <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator size="large" color={c.aiCol} />
           </View>
         )}
         <Image
@@ -83,7 +84,7 @@ export default function ProductDetail({ route, navigation }) {
               >
                 Back
               </CsBtn>
-              <CsBtn onPress={handleCart} iconName="cart" color="lightgreen">
+              <CsBtn onPress={handleCart} iconName="cart" color={c.cartBtn}>
                 Add to Cart
               </CsBtn>
             </View>

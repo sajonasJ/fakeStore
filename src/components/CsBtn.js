@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { fontSize as f, colours as c } from '../constants/constants';
+
 
 export default function CsBtn({ onPress, iconName, children, color }) {
   return (
@@ -8,7 +10,7 @@ export default function CsBtn({ onPress, iconName, children, color }) {
       onPress={onPress}
       style={[styles.detailBtn, { backgroundColor: color }]}
     >
-      <Ionicons name={iconName} size={30} color="#000" />
+      <Ionicons name={iconName} size={30} color={c.aiCol} />
       <Text style={styles.btnTxt}>{children}</Text>
     </TouchableOpacity>
   );
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
   },
   btnTxt: {
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: f.medL,
     textAlign: "center",
   },
 });
