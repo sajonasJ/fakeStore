@@ -35,10 +35,6 @@ export default function ProductList({ route }) {
     console.log(filteredProducts);
   }, [filteredProducts]);
 
-  handlePress = () => {
-    console.log("product pressed");
-  };
-
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
@@ -55,7 +51,7 @@ export default function ProductList({ route }) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => handlePress()}
+            onPress={() => navigation.navigate('ProductDetail', item)}
               style={styles.catListBox}
             >
               <View style={styles.itemBox}>
@@ -64,7 +60,7 @@ export default function ProductList({ route }) {
                   <Text style={styles.catListText}>{item.title}</Text>
                   <Text
                     style={styles.catListPrice}
-                  >{`Price: ${item.price}`}</Text>
+                  >{`Price: $${item.price}`}</Text>
                 </View>
               </View>
             </TouchableOpacity>

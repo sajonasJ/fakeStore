@@ -5,10 +5,13 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Alert } from "react-native";
 
-export default function ProductDetail() {
+export default function ProductDetail({ route, navigation }) {
+  const { title, rating, price, description, image } = route.params;
   handlePress = () => {
     console.log("Pressed");
   };
@@ -23,28 +26,28 @@ export default function ProductDetail() {
       </View>
       {/* Product Details */}
       <View style={styles.prodList}>
-        <View style={styles.prodImg}></View>
+      <Image source={{ uri: image }} style={styles.prodImg} />
         <View style={styles.prodBxName}>
-          <Text style={styles.prodName}>Product Name</Text>
+          <Text style={styles.prodName}>{title}</Text>
         </View>
         <View style={styles.prodStatsBx}>
-          <Text style={styles.prodStatsName}>Product Name</Text>
-          <Text style={styles.prodStatsName}>Product Name</Text>
-          <Text style={styles.prodStatsName}>Product Name</Text>
+          <Text style={styles.prodStatsName}>{`Rating: ${rating.rate}`}</Text>
+          <Text style={styles.prodStatsName}>{`Sold: ${rating.count}`}</Text>
+          <Text style={styles.prodStatsName}>{`Price: $${price}`}</Text>
         </View>
         <View style={styles.detailBtnBx}>
           <TouchableOpacity
-            onPress={() => handlePress()}
+            onPress={() => navigation.goBack()}
             style={styles.detailBtn}
           >
             <Ionicons name="backspace" size={30} color="#000" />
             <Text style={styles.btnTxt}>Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handlePress()}
+            onPress={() => navigation.goBack()}
             style={styles.detailBtn}
           >
-            <Ionicons name="backspace" size={30} color="#000" />
+            <Ionicons name="cart" size={30} color="#000" />
             <Text style={styles.btnTxt}>Add to Cart</Text>
           </TouchableOpacity>
         </View>
@@ -53,7 +56,7 @@ export default function ProductDetail() {
             <Text style={styles.descNameTxt}>Description:</Text>
           </View>
           <View style={styles.descDetBx}>
-            <Text style={styles.descDetTxt}>descDet</Text>
+            <Text style={styles.descDetTxt}>{description}</Text>
           </View>
         </View>
       </View>
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: "100%",
     borderWidth: 1,
-    marginTop:70,
+    marginTop: 70,
   },
   //header
   header: {
@@ -152,21 +155,21 @@ const styles = StyleSheet.create({
     width: "40%",
     borderRadius: 10,
     padding: 5,
-    margin:5,
+    margin: 5,
   },
   //Description
   descBx: {
     borderWidth: 1,
-    flex:1,
+    flex: 1,
   },
   descNameBx: {
     borderWidth: 1,
-    padding:5,
+    padding: 5,
   },
   descDetBx: {
     borderWidth: 1,
-    flex:1,
-    padding:5,
+    flex: 1,
+    padding: 5,
   },
   descNameTxt: {
     borderWidth: 1,
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
   },
   descDetTxt: {
     borderWidth: 1,
-    fontSize:14,
-    flex:1,
+    fontSize: 14,
+    flex: 1,
   },
 });
