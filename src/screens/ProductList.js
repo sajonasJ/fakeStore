@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { fetchProducts } from "../service/fakeStoreAPI";
 import { useNavigation } from "@react-navigation/native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import CsBtn from "../components/CsBtn";
 
 export default function ProductList({ route }) {
   const [products, setProducts] = useState([]);
@@ -23,9 +23,9 @@ export default function ProductList({ route }) {
       setProducts(data);
       const { category } = route.params;
       setCategory(category);
-      const lowercaseCategory = category.toLowerCase();
+      const lcCategory = category.toLowerCase();
       const filtered = data.filter(
-        (product) => product.category.toLowerCase() === lowercaseCategory
+        (product) => product.category.toLowerCase() === lcCategory
       );
       setFilteredProducts(filtered);
     });
@@ -47,7 +47,7 @@ export default function ProductList({ route }) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-            onPress={() => navigation.navigate('ProductDetail', item)}
+              onPress={() => navigation.navigate("ProductDetail", item)}
               style={styles.catListBox}
             >
               <View style={styles.itemBox}>
@@ -64,13 +64,13 @@ export default function ProductList({ route }) {
         />
       </View>
       <View style={styles.bottom}>
-        <TouchableOpacity
+        <CsBtn
           onPress={() => navigation.goBack()}
-          style={styles.backButton}
+          iconName="backspace"
+          color="#4cc9f0"
         >
-          <Ionicons name="backspace" size={30} color="#000" />
-          <Text style={styles.backBtnTxt}>Back</Text>
-        </TouchableOpacity>
+          Back
+        </CsBtn>
       </View>
     </View>
   );
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "#fff",
     width: "100%",
-    marginTop:55,
+    marginTop: 55,
   },
   //header
   header: {
@@ -115,14 +115,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 5,
     marginVertical: 8,
-   shadowColor: "rgba(60, 64, 67, 1)",
-  shadowOffset: {
-    width: 0,
-    height: 4,
-  },
-  shadowOpacity: 0.4,
-  shadowRadius: 1,
-  elevation: 3,
+    shadowColor: "rgba(60, 64, 67, 1)",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 1,
+    elevation: 3,
   },
   catListText: {
     fontSize: 18,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   catListTextBx: {
     justifyContent: "space-between",
-    flex:1,
+    flex: 1,
   },
   catListPrice: {
     fontWeight: "bold",
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   imageBox: {
     borderWidth: 0,
-    borderColor:'lightgray',
+    borderColor: "lightgray",
     width: "25%",
     aspectRatio: 1,
   },
@@ -152,27 +152,5 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-  },
-  backButton: {
-    margin: 5,
-    padding: 5,
-    borderRadius: 10,
-    width: "50%",
-    backgroundColor: "#4cc9f0",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    shadowColor: "rgba(60, 64, 67, 1)",
-  shadowOffset: {
-    width: 0,
-    height: 4,
-  },
-  shadowOpacity: 0.4,
-  shadowRadius: 1,
-  elevation: 3,
-  },
-  backBtnTxt: {
-    fontWeight: "bold",
-    fontSize: 18,
   },
 });

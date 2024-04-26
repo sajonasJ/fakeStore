@@ -4,13 +4,12 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Image,
   Dimensions,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
+import CsBtn from "../components/CsBtn";
 
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
@@ -62,17 +61,16 @@ export default function ProductDetail({ route, navigation }) {
           </View>
         </View>
         <View style={styles.detailBtnBx}>
-          <TouchableOpacity
+          <CsBtn
             onPress={() => navigation.goBack()}
-            style={styles.detailBtn}
+            iconName="backspace"
+            color="#4cc9f0"
           >
-            <Ionicons name="backspace" size={30} color="#000" />
-            <Text style={styles.btnTxt}>Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleCart} style={styles.detailBtn}>
-            <Ionicons name="cart" size={30} color="#000" />
-            <Text style={styles.btnTxt}>Add to Cart</Text>
-          </TouchableOpacity>
+            Back
+          </CsBtn>
+          <CsBtn onPress={handleCart} iconName="cart" color="lightgreen">
+            Add to Cart
+          </CsBtn>
         </View>
         <View style={styles.descBx}>
           <View style={styles.descNameBx}>
@@ -131,17 +129,12 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
   },
-  btnTxt: {
-    fontWeight: "bold",
-    fontSize: 18,
-    textAlign: "center",
-  },
   //product
   prodImg: {
     width: "100%",
     aspectRatio: 1,
-    borderWidth:3,
-    borderColor:'lightgray',
+    borderWidth: 3,
+    borderColor: "lightgray",
     borderRadius: 25,
   },
   prodBxName: {
@@ -153,11 +146,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
-  prodStars:{
-    paddingRight:5,
+  prodStars: {
+    paddingRight: 5,
   },
   prodStatsBx: {
-    // borderWidth: 1,
     flexDirection: "row",
     padding: 3,
     gap: 5,
@@ -165,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   prodStatsName: {
-    flexDirection:'row',
+    flexDirection: "row",
     borderRadius: 5,
     padding: 10,
   },
@@ -173,25 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
   },
-  detailBtn: {
-    flexDirection: "row",
-    backgroundColor:'lightgreen',
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    width: "40%",
-    borderRadius: 10,
-    padding: 5,
-    margin: 5,
-    shadowColor: "rgba(60, 64, 67, 1)",
-  shadowOffset: {
-    width: 0,
-    height: 4,
-  },
-  shadowOpacity: 0.4,
-  shadowRadius: 1,
-  elevation: 3,
-  
-  },
+
   //Description
   descBx: {
     flex: 1,
