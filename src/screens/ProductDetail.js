@@ -38,14 +38,14 @@ export default function ProductDetail() {
             style={styles.detailBtn}
           >
             <Ionicons name="backspace" size={30} color="#000" />
-            <Text style={styles.catListText}>Button</Text>
+            <Text style={styles.btnTxt}>Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handlePress()}
             style={styles.detailBtn}
           >
             <Ionicons name="backspace" size={30} color="#000" />
-            <Text style={styles.catListText}>Add to Cart</Text>
+            <Text style={styles.btnTxt}>Add to Cart</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.descBx}>
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: "100%",
     borderWidth: 1,
+    marginTop:70,
   },
   //header
   header: {
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
   },
-  catListText: {
+  btnTxt: {
     fontWeight: "bold",
     fontSize: 18,
     textAlign: "center",
@@ -146,10 +147,12 @@ const styles = StyleSheet.create({
   detailBtn: {
     borderWidth: 1,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
     width: "40%",
     borderRadius: 10,
+    padding: 5,
+    margin:5,
   },
   //Description
   descBx: {

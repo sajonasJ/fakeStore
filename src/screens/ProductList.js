@@ -38,7 +38,10 @@ export default function ProductList() {
             >
               <View style={styles.itemBox}>
                 <View style={styles.imageBox}></View>
+                <View style={styles.catListTextBx}>
                 <Text style={styles.catListText}>{item}</Text>
+                <Text style={styles.catListPrice}>{item}</Text>
+                </View>
               </View>
             </TouchableOpacity>
           )}
@@ -50,7 +53,7 @@ export default function ProductList() {
           style={styles.backButton}
         >
           <Ionicons name="backspace" size={30} color="#000" />
-          <Text>Back</Text>
+          <Text style={styles.backBtnTxt}>Back</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -66,6 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: "100%",
     borderWidth: 1,
+    marginTop:70,
   },
   //header
   header: {
@@ -98,13 +102,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "100%",
     backgroundColor: "lightgreen",
-    padding: 15,
+    padding: 5,
     marginVertical: 8,
   },
   catListText: {
-    fontWeight: "bold",
     fontSize: 18,
     textAlign: "center",
+  },
+  catListTextBx:{
+    justifyContent:"space-between"
+  },
+  catListPrice:{
+    fontWeight:"bold",
   },
   // item
   itemBox: {
@@ -126,13 +135,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   backButton: {
+    margin:5,
     borderWidth: 1,
-    padding: 10,
+    padding: 5,
     borderRadius:10,
     width:'50%',
     backgroundColor: "red",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
+  },
+  backBtnTxt:{
+    fontWeight:'bold',
+    fontSize:18,
   },
 });
