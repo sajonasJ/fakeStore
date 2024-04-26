@@ -1,46 +1,70 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StatusBar,
   View,
+  Image,
   Text,
   StyleSheet,
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import { fetchProducts } from "../service/fakeStoreAPI";
+import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-export default function ProductList() {
-  categories = ["Electronics", "Jewelry", "Men's Clothing", "Women's Clothing"];
+export default function ProductList({ route }) {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [category, setCategory] = useState("");
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetchProducts().then((data) => {
+      setProducts(data);
+      const { category } = route.params;
+      setCategory(category);
+      const lowercaseCategory = category.toLowerCase();
+      const filtered = data.filter(
+        (product) => product.category.toLowerCase() === lowercaseCategory
+      );
+      setFilteredProducts(filtered);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(filteredProducts);
+  }, [filteredProducts]);
+
   handlePress = () => {
     console.log("product pressed");
   };
-  handleBack = () => {
-    console.log("back button pressed");
-  };
+
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerBox}>
-          <Text style={styles.headerTxt}>Product List Temp</Text>
+          <Text style={styles.headerTxt}>{category}</Text>
         </View>
       </View>
       {/* Product Categories */}
       <View style={styles.catList}>
         <FlatList
-          data={categories}
-          keyExtractor={(item) => item}
+          data={filteredProducts} // use filteredProducts instead of products
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => handlePress()}
               style={styles.catListBox}
             >
               <View style={styles.itemBox}>
-                <View style={styles.imageBox}></View>
+                <Image source={{ uri: item.image }} style={styles.imageBox} />
                 <View style={styles.catListTextBx}>
-                <Text style={styles.catListText}>{item}</Text>
-                <Text style={styles.catListPrice}>{item}</Text>
+                  <Text style={styles.catListText}>{item.title}</Text>
+                  <Text
+                    style={styles.catListPrice}
+                  >{`Price: ${item.price}`}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -49,7 +73,7 @@ export default function ProductList() {
       </View>
       <View style={styles.bottom}>
         <TouchableOpacity
-          onPress={() => handleBack()}
+          onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
           <Ionicons name="backspace" size={30} color="#000" />
@@ -69,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: "100%",
     borderWidth: 1,
-    marginTop:70,
+    marginTop: 70,
   },
   //header
   header: {
@@ -94,9 +118,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: "white",
     justifyContent: "flex-start",
-    width: "80%",
+    width: "95%",
     height: "78%",
-    // marginTop: "2%",
   },
   catListBox: {
     borderWidth: 1,
@@ -107,13 +130,16 @@ const styles = StyleSheet.create({
   },
   catListText: {
     fontSize: 18,
-    textAlign: "center",
+    borderWidth: 1,
+    flex: 1,
   },
-  catListTextBx:{
-    justifyContent:"space-between"
+  catListTextBx: {
+    justifyContent: "space-between",
+    flex:1,
   },
-  catListPrice:{
-    fontWeight:"bold",
+  catListPrice: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
   // item
   itemBox: {
@@ -135,18 +161,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   backButton: {
-    margin:5,
+    margin: 5,
     borderWidth: 1,
     padding: 5,
-    borderRadius:10,
-    width:'50%',
+    borderRadius: 10,
+    width: "50%",
     backgroundColor: "red",
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
   },
-  backBtnTxt:{
-    fontWeight:'bold',
-    fontSize:18,
+  backBtnTxt: {
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });
