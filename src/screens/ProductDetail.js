@@ -6,14 +6,28 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
+
 
 export default function ProductDetail({ route, navigation }) {
+  const windowHeight = Dimensions.get('window').height;
   const { title, rating, price, description, image } = route.params;
-  handlePress = () => {
-    console.log("Pressed");
+  const handleCart = () => {
+    Toast.show({
+      type: "success",
+      position: "bottom",
+      text1: "Added to Cart!",
+      text1Style: {
+        textAlign: 'center',
+        fontSize:20,
+      },
+      swipeable: true,
+      bottomOffset: windowHeight / 3,
+      visibilityTime: 1000,
+    });
   };
   return (
     <View style={styles.container}>
@@ -44,7 +58,7 @@ export default function ProductDetail({ route, navigation }) {
             <Text style={styles.btnTxt}>Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={handleCart}
             style={styles.detailBtn}
           >
             <Ionicons name="cart" size={30} color="#000" />
