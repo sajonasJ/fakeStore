@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StatusBar,
   View,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
@@ -15,6 +16,12 @@ import Header from "../components/Header";
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
   const { title, rating, price, description, image } = route.params;
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleImageLoad = () => {
+      setIsLoading(false);
+  };
+
   const handleCart = () => {
     Toast.show({
       type: "success",
@@ -29,53 +36,67 @@ export default function ProductDetail({ route, navigation }) {
       visibilityTime: 1000,
     });
   };
+  
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
-      <Header title='Product Deails'/>
+      <Header title="Product Deails" />
       {/* Product Details */}
       <View style={styles.prodList}>
-        <Image source={{ uri: image }} style={styles.prodImg} />
-        <View style={styles.prodBxName}>
-          <Text style={styles.prodName}>{title}</Text>
-        </View>
-        <View style={styles.prodStatsBx}>
-          <View style={styles.prodStatsName}>
-            <Text style={styles.prodStars}>Rating: {rating.rate}</Text>
-            <Rating
-              type="star"
-              ratingCount={5}
-              imageSize={15}
-              startingValue={rating.rate}
-            />
+        {isLoading && (
+          <View style={styles.aiBox}>
+            <ActivityIndicator size="large" color="#0000ff" />
           </View>
-          <View style={styles.prodStatsName}>
-            <Text>{`Sold: ${rating.count}`}</Text>
-          </View>
-          <View style={styles.prodStatsName}>
-            <Text>{`Price: $${price}`}</Text>
-          </View>
-        </View>
-        <View style={styles.detailBtnBx}>
-          <CsBtn
-            onPress={() => navigation.goBack()}
-            iconName="backspace"
-            color="#4cc9f0"
-          >
-            Back
-          </CsBtn>
-          <CsBtn onPress={handleCart} iconName="cart" color="lightgreen">
-            Add to Cart
-          </CsBtn>
-        </View>
-        <View style={styles.descBx}>
-          <View style={styles.descNameBx}>
-            <Text style={styles.descNameTxt}>Description:</Text>
-          </View>
-          <View style={styles.descDetBx}>
-            <Text style={styles.descDetTxt}>{description}</Text>
-          </View>
-        </View>
+        )}
+        <Image
+          source={{ uri: image }}
+          style={styles.prodImg}
+          onLoadEnd={handleImageLoad}
+        />
+        {!isLoading && (
+          <>
+            <View style={styles.prodBxName}>
+              <Text style={styles.prodName}>{title}</Text>
+            </View>
+            <View style={styles.prodStatsBx}>
+              <View style={styles.prodStatsName}>
+                <Text style={styles.prodStars}>Rating: {rating.rate}</Text>
+                <Rating
+                  type="star"
+                  ratingCount={5}
+                  imageSize={15}
+                  startingValue={rating.rate}
+                />
+              </View>
+              <View style={styles.prodStatsName}>
+                <Text>{`Sold: ${rating.count}`}</Text>
+              </View>
+              <View style={styles.prodStatsName}>
+                <Text>{`Price: $${price}`}</Text>
+              </View>
+            </View>
+            <View style={styles.detailBtnBx}>
+              <CsBtn
+                onPress={() => navigation.goBack()}
+                iconName="backspace"
+                color="#4cc9f0"
+              >
+                Back
+              </CsBtn>
+              <CsBtn onPress={handleCart} iconName="cart" color="lightgreen">
+                Add to Cart
+              </CsBtn>
+            </View>
+            <View style={styles.descBx}>
+              <View style={styles.descNameBx}>
+                <Text style={styles.descNameTxt}>Description:</Text>
+              </View>
+              <View style={styles.descDetBx}>
+                <Text style={styles.descDetTxt}>{description}</Text>
+              </View>
+            </View>
+          </>
+        )}
       </View>
     </View>
   );
@@ -125,20 +146,22 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
   },
+  aiBox: {
+    ...StyleSheet.absoluteFill,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+  },
   //product
   prodImg: {
     width: "100%",
     aspectRatio: 1,
-    borderWidth: 3,
-    borderColor: "lightgray",
     borderRadius: 25,
   },
   prodBxName: {
-    // borderWidth: 1,
     padding: 5,
   },
   prodName: {
-    // borderWidth: 1,
     fontWeight: "bold",
     fontSize: 20,
   },

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CsBtn from "../components/CsBtn";
@@ -16,6 +17,7 @@ export default function ProductList({ route }) {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState("");
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const { category, products } = route.params;
@@ -25,35 +27,36 @@ export default function ProductList({ route }) {
       (product) => product.category.toLowerCase() === lcCategory
     );
     setFilteredProducts(filtered);
+    setIsLoading(false);
   }, []);
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
-      {/* Header */}
       <Header title={category}/>
-      {/* Product Categories */}
       <View style={styles.catList}>
-        <FlatList
-          data={filteredProducts} // use filteredProducts instead of products
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("ProductDetail", item)}
-              style={styles.catListBox}
-            >
-              <View style={styles.itemBox}>
-                <Image source={{ uri: item.image }} style={styles.imageBox} />
-                <View style={styles.catListTextBx}>
-                  <Text style={styles.catListText}>{item.title}</Text>
-                  <Text
-                    style={styles.catListPrice}
-                  >{`Price: $${item.price}`}</Text>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <FlatList
+            data={filteredProducts}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ProductDetail", item)}
+                style={styles.catListBox}
+              >
+                <View style={styles.itemBox}>
+                  <Image source={{ uri: item.image }} style={styles.imageBox} />
+                  <View style={styles.catListTextBx}>
+                    <Text style={styles.catListText}>{item.title}</Text>
+                    <Text style={styles.catListPrice}>{`Price: $${item.price}`}</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
+              </TouchableOpacity>
+            )}
+          />
+        )}
       </View>
       <View style={styles.bottom}>
         <CsBtn
@@ -67,7 +70,6 @@ export default function ProductList({ route }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   //page
   container: {

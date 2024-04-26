@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import  fetchProducts  from "../service/fakeStoreAPI";
 import Header from "../components/Header";
@@ -13,6 +14,7 @@ import Header from "../components/Header";
 export default function Category({navigation}) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   function capFirstLetter(string) {
     return string.split(' ')
@@ -26,6 +28,7 @@ export default function Category({navigation}) {
       const uniqueCategories = [...new Set(data.map(item => capFirstLetter(item.category)))];      
       setCategories(uniqueCategories);
     });
+    setIsLoading(false);
   }, []);
 
   const handlePress = (category) => {
@@ -39,18 +42,22 @@ export default function Category({navigation}) {
       <Header title='Categories'/>
       {/* Product Categories */}
       <View style={styles.catList}>
-        <FlatList
-          data={categories}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => handlePress(item)}
-              style={styles.catListBox}
-            >
-              <Text style={styles.catListText}>{item}</Text>
-            </TouchableOpacity>
-          )}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <FlatList
+            data={categories}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => handlePress(item)}
+                style={styles.catListBox}
+              >
+                <Text style={styles.catListText}>{item}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
       </View>
     </View>
   );
