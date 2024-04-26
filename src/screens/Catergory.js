@@ -14,7 +14,9 @@ export default function Category({navigation}) {
   const [categories, setCategories] = useState([]);
 
   function capFirstLetter(string) {
-    return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    return string.split(' ')
+    .map(word => word.charAt(0)
+    .toUpperCase() + word.slice(1)).join(' ');
   }
 
   useEffect(() => {
@@ -26,7 +28,6 @@ export default function Category({navigation}) {
   }, []);
 
   const handlePress = (category) => {
-    console.log(`Category pressed: ${category}`);
     navigation.navigate('ProductList', { category });
   };
 
@@ -36,7 +37,7 @@ export default function Category({navigation}) {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerBox}>
-          <Text style={styles.headerTxt}>Category Screen</Text>
+          <Text style={styles.headerTxt}>Categories</Text>
         </View>
       </View>
       {/* Product Categories */}
@@ -66,41 +67,44 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "#fff",
     width:'100%',
-    borderWidth: 1,
-    marginTop:70,
+    marginTop:55,
   },
   //header
   header: {
-    borderWidth: 1,
     width: "100%",
     alignItems: "center",
   },
   headerBox: {
-    borderWidth: 1,
-    width: "90%",
+    width: "100%",
     alignItems: "center",
-    backgroundColor: "maroon",
+    backgroundColor: "black",
     padding: 17,
   },
   headerTxt: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "bold",
     color: "white",
   },
   //category list
   catList: {
-    borderWidth: 1,
     backgroundColor: "white",
     justifyContent: "flex-start",
-    width: "80%",
+    width: "100%",
     height: "85%",
   },
   catListBox: {
-    borderWidth: 1,
     width: "100%",
-    backgroundColor: "lightgreen",
-    padding: 15,
-    marginVertical:8,
+    backgroundColor: "white",
+    padding: 35,
+    marginVertical: 8,
+    shadowColor: "rgba(60, 64, 67, 1)",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 1,
+    elevation: 3,
   },
   catListText: {
     fontWeight: "bold",

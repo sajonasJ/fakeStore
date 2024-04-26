@@ -1,5 +1,3 @@
-
-
 const fakeStoreAPI = 'https://fakestoreapi.com/products';
 
 export async function fetchProducts() {

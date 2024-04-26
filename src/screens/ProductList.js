@@ -31,10 +31,6 @@ export default function ProductList({ route }) {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(filteredProducts);
-  }, [filteredProducts]);
-
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
@@ -88,45 +84,48 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "#fff",
     width: "100%",
-    borderWidth: 1,
-    marginTop: 70,
+    marginTop:55,
   },
   //header
   header: {
-    borderWidth: 1,
     width: "100%",
     alignItems: "center",
   },
   headerBox: {
-    borderWidth: 1,
-    width: "90%",
+    width: "100%",
     alignItems: "center",
-    backgroundColor: "maroon",
+    backgroundColor: "black",
     padding: 17,
   },
   headerTxt: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "bold",
     color: "white",
   },
   //category list
   catList: {
-    borderWidth: 1,
     backgroundColor: "white",
     justifyContent: "flex-start",
-    width: "95%",
-    height: "78%",
+    width: "100%",
+    height: "80%",
   },
   catListBox: {
-    borderWidth: 1,
+    // borderWidth: 1,
     width: "100%",
-    backgroundColor: "lightgreen",
+    backgroundColor: "white",
     padding: 5,
     marginVertical: 8,
+   shadowColor: "rgba(60, 64, 67, 1)",
+  shadowOffset: {
+    width: 0,
+    height: 4,
+  },
+  shadowOpacity: 0.4,
+  shadowRadius: 1,
+  elevation: 3,
   },
   catListText: {
     fontSize: 18,
-    borderWidth: 1,
     flex: 1,
   },
   catListTextBx: {
@@ -139,33 +138,38 @@ const styles = StyleSheet.create({
   },
   // item
   itemBox: {
-    borderWidth: 1,
     flexDirection: "row",
-    padding: 5,
     gap: 10,
   },
   imageBox: {
-    borderWidth: 1,
+    borderWidth: 0,
+    borderColor:'lightgray',
     width: "25%",
     aspectRatio: 1,
   },
   // bottom
   bottom: {
-    borderWidth: 1,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
   backButton: {
     margin: 5,
-    borderWidth: 1,
     padding: 5,
     borderRadius: 10,
     width: "50%",
-    backgroundColor: "red",
+    backgroundColor: "#4cc9f0",
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
+    shadowColor: "rgba(60, 64, 67, 1)",
+  shadowOffset: {
+    width: 0,
+    height: 4,
+  },
+  shadowOpacity: 0.4,
+  shadowRadius: 1,
+  elevation: 3,
   },
   backBtnTxt: {
     fontWeight: "bold",

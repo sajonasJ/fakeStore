@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
-
+import { Rating } from "react-native-ratings";
 
 export default function ProductDetail({ route, navigation }) {
-  const windowHeight = Dimensions.get('window').height;
+  const windowHeight = Dimensions.get("window").height;
   const { title, rating, price, description, image } = route.params;
   const handleCart = () => {
     Toast.show({
@@ -21,8 +21,8 @@ export default function ProductDetail({ route, navigation }) {
       position: "bottom",
       text1: "Added to Cart!",
       text1Style: {
-        textAlign: 'center',
-        fontSize:20,
+        textAlign: "center",
+        fontSize: 20,
       },
       swipeable: true,
       bottomOffset: windowHeight / 3,
@@ -40,14 +40,26 @@ export default function ProductDetail({ route, navigation }) {
       </View>
       {/* Product Details */}
       <View style={styles.prodList}>
-      <Image source={{ uri: image }} style={styles.prodImg} />
+        <Image source={{ uri: image }} style={styles.prodImg} />
         <View style={styles.prodBxName}>
           <Text style={styles.prodName}>{title}</Text>
         </View>
         <View style={styles.prodStatsBx}>
-          <Text style={styles.prodStatsName}>{`Rating: ${rating.rate}`}</Text>
-          <Text style={styles.prodStatsName}>{`Sold: ${rating.count}`}</Text>
-          <Text style={styles.prodStatsName}>{`Price: $${price}`}</Text>
+          <View style={styles.prodStatsName}>
+            <Text style={styles.prodStars}>Rating: {rating.rate}</Text>
+            <Rating
+              type="star"
+              ratingCount={5}
+              imageSize={15}
+              startingValue={rating.rate}
+            />
+          </View>
+          <View style={styles.prodStatsName}>
+            <Text>{`Sold: ${rating.count}`}</Text>
+          </View>
+          <View style={styles.prodStatsName}>
+            <Text>{`Price: $${price}`}</Text>
+          </View>
         </View>
         <View style={styles.detailBtnBx}>
           <TouchableOpacity
@@ -57,10 +69,7 @@ export default function ProductDetail({ route, navigation }) {
             <Ionicons name="backspace" size={30} color="#000" />
             <Text style={styles.btnTxt}>Back</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleCart}
-            style={styles.detailBtn}
-          >
+          <TouchableOpacity onPress={handleCart} style={styles.detailBtn}>
             <Ionicons name="cart" size={30} color="#000" />
             <Text style={styles.btnTxt}>Add to Cart</Text>
           </TouchableOpacity>
@@ -87,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: "100%",
     borderWidth: 1,
-    marginTop: 70,
+    marginTop: 55,
   },
   //header
   header: {
@@ -97,19 +106,18 @@ const styles = StyleSheet.create({
   },
   headerBox: {
     borderWidth: 1,
-    width: "90%",
+    width: "100%",
     alignItems: "center",
-    backgroundColor: "maroon",
+    backgroundColor: "black",
     padding: 17,
   },
   headerTxt: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "bold",
     color: "white",
   },
   //category list
   prodList: {
-    borderWidth: 1,
     backgroundColor: "white",
     justifyContent: "flex-start",
     width: "90%",
@@ -132,20 +140,24 @@ const styles = StyleSheet.create({
   prodImg: {
     width: "100%",
     aspectRatio: 1,
-    borderWidth: 1,
+    borderWidth:3,
+    borderColor:'lightgray',
     borderRadius: 25,
   },
   prodBxName: {
-    borderWidth: 1,
+    // borderWidth: 1,
     padding: 5,
   },
   prodName: {
-    borderWidth: 1,
+    // borderWidth: 1,
     fontWeight: "bold",
     fontSize: 20,
   },
+  prodStars:{
+    paddingRight:5,
+  },
   prodStatsBx: {
-    borderWidth: 1,
+    // borderWidth: 1,
     flexDirection: "row",
     padding: 3,
     gap: 5,
@@ -153,7 +165,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   prodStatsName: {
-    borderWidth: 1,
+    flexDirection:'row',
     borderRadius: 5,
     padding: 10,
   },
@@ -162,22 +174,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   detailBtn: {
-    borderWidth: 1,
     flexDirection: "row",
+    backgroundColor:'lightgreen',
     justifyContent: "space-evenly",
     alignItems: "center",
     width: "40%",
     borderRadius: 10,
     padding: 5,
     margin: 5,
+    shadowColor: "rgba(60, 64, 67, 1)",
+  shadowOffset: {
+    width: 0,
+    height: 4,
+  },
+  shadowOpacity: 0.4,
+  shadowRadius: 1,
+  elevation: 3,
+  
   },
   //Description
   descBx: {
-    borderWidth: 1,
     flex: 1,
   },
   descNameBx: {
-    borderWidth: 1,
     padding: 5,
   },
   descDetBx: {
@@ -186,12 +205,10 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   descNameTxt: {
-    borderWidth: 1,
     fontWeight: "bold",
     fontSize: 16,
   },
   descDetTxt: {
-    borderWidth: 1,
     fontSize: 14,
     flex: 1,
   },
