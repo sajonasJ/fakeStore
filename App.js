@@ -5,6 +5,7 @@ import Splash from "./src/screens/Splash";
 import Category from "./src/screens/Catergory";
 import ProductList from "./src/screens/ProductList";
 import ProductDetail from "./src/screens/ProductDetail";
+import ShoppingCart from "./src/screens/ShoppingCart";
 import Toast from "react-native-toast-message";
 import { colours as c } from "./src/constants/constants";
 
@@ -40,6 +41,11 @@ export default function App() {
           <Stack.Screen
             name="ProductDetail"
             component={ProductDetail}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ShoppingCart"
+            component={ShoppingCart}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
