@@ -6,6 +6,6 @@ import productReducer from "../reducers/productSlice";
 export default configureStore ({
     reducer:{
         counter: counterReducer,
-        product: productReducer,
+        products: productReducer,
     },
 });

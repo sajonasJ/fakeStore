@@ -19,11 +19,11 @@ export default function ProductDetail({ route, navigation }) {
   const { title, rating, price, description, image } = route.params;
   const [isLoading, setIsLoading] = useState(true);
 
-//set image loading to false
+
   const handleImageLoad = () => {
     setIsLoading(false);
   };
-//show toast with message
+
   const handleCart = () => {
     Toast.show({
       type: "success",
@@ -43,7 +43,7 @@ export default function ProductDetail({ route, navigation }) {
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
       <Header title="Product Details" />
-      {/* Product Details */}
+    
       <View style={styles.prodList}>
         {isLoading && (
           <View style={styles.aiBox}>

@@ -1,6 +1,6 @@
 "use strict";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {fetchProducts} from "../service/fakeStoreAPI";
+import fetchProducts from "../service/fakeStoreAPI";
 
 const initialState = {
   productData: null,
@@ -13,11 +13,9 @@ const initialState = {
 export const loadProductData = createAsyncThunk(
   "loadProduct",
   async (selectedCategory, thunkAPI) => {
-    if (!selectedCategory)
-      return thunkAPI.rejectWithValue("selectedCategory can't be empty.");
     try {
       const ret = await fetchProducts();
-      if (selectedCategory !== "all") {
+      if (selectedCategory && selectedCategory !== "all") {
         return ret.filter((product) => product.category === selectedCategory);
       }
       return ret;
@@ -54,5 +52,5 @@ const productSlice  = createSlice({
   },
 });
 export const { selectCategory } = productSlice.actions;
-export const selectProduct = (state) => state.product;
+export const selectProduct = (state) => state.products;
 export default productSlice.reducer;

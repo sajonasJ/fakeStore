@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import fetchProducts from "../service/fakeStoreAPI";
 import Header from "../components/Header";
 import { fontSize as f, colours as c } from '../constants/constants';
 import { loadProductData, selectProduct } from "../reducers/productSlice";
@@ -19,8 +18,6 @@ export default function Category({ navigation }) {
   const dispatch = useDispatch();
   const { productData, loading, error } = useSelector(selectProduct);
   const [categories, setCategories] = useState([]);
-  // const [products, setProducts] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
 
   // capitalise first letter of strings
   function capFirstLetter(string) {
@@ -36,16 +33,19 @@ export default function Category({ navigation }) {
 
   useEffect(() => {
     if (productData) {
+      const cat = productData.map(item => item.category);
       const uniqueCategories = [
         ...new Set(productData.map((item) => capFirstLetter(item.category))),
       ];
-      console.log(productData)
+      console.log('getting data')
       setCategories(uniqueCategories);
     }
   }, [productData]);
 
   const handlePress = (category) => {
-    navigation.navigate("ProductList", { category, products: productData });
+    console.log('handlepress')
+    const productsInCategory = productData.filter(product => product.category.toLowerCase() === category.toLowerCase());
+    navigation.navigate("ProductList", { category, products: productsInCategory });
   };
 
 
@@ -62,6 +62,8 @@ export default function Category({ navigation }) {
             color={c.aiCol}
             style={styles.activityIndicator}
           />
+        ) : error ? (
+          <Text>Error: {error}</Text>
         ) : (
           <FlatList
             data={categories}

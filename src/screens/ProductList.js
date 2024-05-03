@@ -20,26 +20,21 @@ export default function ProductList({ route }) {
   const navigation = useNavigation();
   const [imageStatus, setImageStatus] = useState({});
 
-  //change category names to lowercase to match with data
+
   useEffect(() => {
     const { category, products } = route.params;
     setCategory(category);
-    //make sure the selected category is the same with the data selected
-    const lcCategory = category.toLowerCase();
-    //grab the products by category
-    const filtered = products.filter(
-      (product) => product.category.toLowerCase() === lcCategory
-    );
-
-    setFilteredProducts(filtered);
+    setFilteredProducts(products);
   }, []);
 
 //make sure activity indicator is on when image starts loading
   const handleImageLoadStart = (id) => {
+    console.log('ImageLoadStart')
     setImageStatus((prevStatus) => ({ ...prevStatus, [id]: "loading" }));
   };
 //make sure activity indicator is off when image stops loading
   const handleImageLoadEnd = (id) => {
+    console.log('ImageLoadEnd')
     setImageStatus((prevStatus) => ({ ...prevStatus, [id]: "loaded" }));
   };
   return (
