@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Provider } from "react-redux";
 import store from "./src/service/store";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,6 +12,9 @@ import ShoppingCart from "./src/screens/ShoppingCart";
 import Toast from "react-native-toast-message";
 import { colours as c } from "./src/constants/constants";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Badge } from 'react-native-elements';
+import { useSelector } from 'react-redux';
+import { selectCount } from "./src/reducers/counterSlice";
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -35,8 +38,11 @@ function CategoryTabs() {
         component={ShoppingCart}
         options={{ headerShown: false,
           tabBarIcon: ({}) => (
+            <View>
             <Ionicons name="cart" color='green' size={40} />
-          ),
+            <Badge value={useSelector(selectCount)} status="error" containerStyle={{ position: 'absolute', top: -4, right: -4 }}/>
+          </View>
+        ),
           tabBarLabel: () => (
             <Text style={{ color: 'green', fontSize: 14, fontWeight:'bold' }}>Shopping Cart</Text>
           ), }}
