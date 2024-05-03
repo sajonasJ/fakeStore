@@ -18,8 +18,6 @@ const Tabs = createBottomTabNavigator();
 
 function CategoryTabs() {
   return (
-    <Provider store={store}>
-
     <Tabs.Navigator>
       <Tabs.Screen
         name="Products"
@@ -44,13 +42,13 @@ function CategoryTabs() {
           ), }}
       />
     </Tabs.Navigator>
-    </Provider>
   );
 }
 
 export default function App() {
   return (
     <>
+      <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Category"
@@ -83,6 +81,7 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />
+      </Provider>
     </>
   );
 }

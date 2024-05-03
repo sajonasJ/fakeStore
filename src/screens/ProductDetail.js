@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
+import { selectCart, selectCount } from '../reducers/counterSlice';
 import {
   StatusBar,
   View,
@@ -12,19 +14,24 @@ import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
 import CsBtn from "../components/CsBtn";
 import Header from "../components/Header";
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../reducers/counterSlice';
 import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
   const { title, rating, price, description, image } = route.params;
   const [isLoading, setIsLoading] = useState(true);
-
+  const dispatch = useDispatch();
 
   const handleImageLoad = () => {
     setIsLoading(false);
   };
 
   const handleCart = () => {
+    const product = { title, rating, price, description, image };
+    dispatch(addToCart(product));
+
     Toast.show({
       type: "success",
       position: "bottom",
@@ -38,6 +45,12 @@ export default function ProductDetail({ route, navigation }) {
       visibilityTime: 1000,
     });
   };
+  const cart = useSelector(selectCart);
+  const cartnum = useSelector(selectCount);
+
+  useEffect(() => {
+    console.log('Cart items:', cartnum);
+  }, [cart, cartnum]);
 
   return (
     <View style={styles.container}>
