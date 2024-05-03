@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   StatusBar,
   View,
@@ -11,11 +12,15 @@ import {
 import fetchProducts from "../service/fakeStoreAPI";
 import Header from "../components/Header";
 import { fontSize as f, colours as c } from '../constants/constants';
+import { loadProductData, selectProduct } from "../reducers/productSlice";
+
 
 export default function Category({ navigation }) {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const { productData, loading, error } = useSelector(selectProduct);
   const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [products, setProducts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
 
   // capitalise first letter of strings
   function capFirstLetter(string) {
@@ -25,31 +30,33 @@ export default function Category({ navigation }) {
       .join(" ");
   }
 
-  //get data grom api
   useEffect(() => {
-    fetchProducts().then((data) => {
-      setProducts(data);
-      //make new array with capitalised letters
+    dispatch(loadProductData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (productData) {
       const uniqueCategories = [
-        ...new Set(data.map((item) => capFirstLetter(item.category))),
+        ...new Set(productData.map((item) => capFirstLetter(item.category))),
       ];
+      console.log(productData)
       setCategories(uniqueCategories);
-      setIsLoading(false);
-    });
-  }, []);
-  // push category and products to next page
+    }
+  }, [productData]);
+
   const handlePress = (category) => {
-    navigation.navigate("ProductList", { category, products });
+    navigation.navigate("ProductList", { category, products: productData });
   };
+
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
-      {/* Header */}
+    
       <Header title="Categories" />
-      {/* Product Categories */}
+
       <View style={styles.catList}>
-        {isLoading ? (
+        {loading ? (
           <ActivityIndicator
             size="large"
             color={c.aiCol}

@@ -1,4 +1,6 @@
 import { StyleSheet, Text } from "react-native";
+import { Provider } from "react-redux";
+import store from "./src/service/store";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -16,6 +18,8 @@ const Tabs = createBottomTabNavigator();
 
 function CategoryTabs() {
   return (
+    <Provider store={store}>
+
     <Tabs.Navigator>
       <Tabs.Screen
         name="Products"
@@ -40,6 +44,7 @@ function CategoryTabs() {
           ), }}
       />
     </Tabs.Navigator>
+    </Provider>
   );
 }
 
@@ -48,7 +53,7 @@ export default function App() {
     <>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Splash"
+          initialRouteName="Category"
           screenOptions={{
             headerStyle: {
               backgroundColor: c.bkgcol,
