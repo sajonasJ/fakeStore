@@ -42,7 +42,7 @@ export default function ProductDetail({ route, navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
-      <Header title="Product Deails" />
+      <Header title="Product Details" />
       {/* Product Details */}
       <View style={styles.prodList}>
         {isLoading && (
