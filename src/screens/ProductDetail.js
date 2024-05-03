@@ -20,7 +20,8 @@ import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
-  const { title, rating, price, description, image } = route.params;
+  const item = route.params?.item;
+  const { title, rating, price, description, image } = item || {};
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 

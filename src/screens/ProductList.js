@@ -47,7 +47,7 @@ export default function ProductList({ route }) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("ProductDetail", item)}
+            onPress={() => navigation.navigate("ProductDetail", { item })}
               style={styles.catListBox}
             >
               <View style={styles.itemBox}>

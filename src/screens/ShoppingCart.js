@@ -1,14 +1,22 @@
 import React from "react";
-import { useSelector } from 'react-redux';
-import { selectCart } from '../reducers/counterSlice';
+import { useSelector } from "react-redux";
+import { selectCart, selectCount } from "../reducers/counterSlice";
 
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import Header from "../components/Header";
-import { fontSize as f, colours as c } from '../constants/constants';
+import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function ShoppingCart({ navigation }) {
   const cart = useSelector(selectCart);
-
+  const itemCount = useSelector(selectCount);
+  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
   return (
     <View style={styles.container}>
       <Header title="Shopping Cart" />
@@ -17,26 +25,89 @@ export default function ShoppingCart({ navigation }) {
           data={cart}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.catListBox}>
+            <TouchableOpacity style={styles.catListBox}
+            onPress={() => {
+              console.log('here',item);
+              navigation.navigate('ProductDetail', { item });
+            }}>
               <View style={styles.itemBox}>
                 <View style={styles.imageContainer}>
                   <Image source={{ uri: item.image }} style={styles.imageBx} />
                 </View>
                 <View style={styles.catListTextBx}>
                   <Text style={styles.catListText}>{item.title}</Text>
-                  <Text style={styles.catListPrice}>{`Price: $${item.price}`}</Text>
-                  <Text>Rate: {item.rating.rate}, Count: {item.rating.count}</Text>
+                  <Text
+                    style={styles.catListPrice}
+                  >{`Price: $${item.price}`}</Text>
+                  <Text>
+                    Rate: {item.rating.rate}, Count: {item.rating.count}
+                  </Text>
                 </View>
               </View>
             </TouchableOpacity>
           )}
         />
       </View>
+      <View style={styles.totals}>
+        <View style={styles.totalItems}>
+          <View style={styles.totalTitle}>
+            <Text style={styles.totalsTitleTxt}>Total Items:</Text>
+          </View>
+          <View style={styles.totalRes}>
+            <Text style={styles.totalsTxt}>{itemCount}</Text>
+          </View>
+        </View>
+        <View style={styles.totalPrice}>
+          <View style={styles.totalTitle}>
+            <Text style={styles.totalsTitleTxt}>Total Price: </Text>
+          </View>
+          <View style={styles.totalRes}>
+            <Text style={styles.totalsTxt}>${totalPrice.toFixed(2)}</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
   //page
+  totalRes: {
+    alignSelf: "center",
+  },
+
+  totalsTitleTxt: {
+    fontSize: 23,
+    fontWeight: "bold",
+  },
+  totalsTxt: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  totalItems: {
+    padding:5,
+    borderWidth:1,
+    flex: 1,
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    gap: 5,
+  },
+  totalPrice: {
+    borderWidth:1,
+    padding:5,
+    flex: 1,
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    gap: 5,
+  },
+  totals: {
+    flexDirection: "row",
+
+    flex: 1,
+    width: "100%",
+
+  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -77,7 +148,7 @@ const styles = StyleSheet.create({
   },
   catListPrice: {
     fontWeight: "bold",
-    fontSize:f.med,
+    fontSize: f.med,
   },
   // item
   itemBox: {

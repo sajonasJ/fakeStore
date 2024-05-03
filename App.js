@@ -12,12 +12,24 @@ import ShoppingCart from "./src/screens/ShoppingCart";
 import Toast from "react-native-toast-message";
 import { colours as c } from "./src/constants/constants";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Badge } from 'react-native-elements';
-import { useSelector } from 'react-redux';
+import { Badge } from "react-native-elements";
+import { useSelector } from "react-redux";
 import { selectCount } from "./src/reducers/counterSlice";
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
+
+function TabBarIcon() {
+  const count = useSelector(selectCount);
+  return (
+    <View>
+      <Ionicons name="cart" color='green' size={40} />
+      {count > 0 && (
+        <Badge value={count} status="error" containerStyle={{ position: 'absolute', top: -4, right: -4 }}/>
+      )}
+    </View>
+  );
+}
 
 function CategoryTabs() {
   return (
@@ -25,27 +37,32 @@ function CategoryTabs() {
       <Tabs.Screen
         name="Products"
         component={Category}
-        options={{ headerShown: false,
+        options={{
+          headerShown: false,
           tabBarIcon: ({}) => (
-            <Ionicons name="menu" color='#4cc9f0' size={40} />
+            <Ionicons name="menu" color="#4cc9f0" size={40} />
           ),
           tabBarLabel: () => (
-            <Text style={{ color: '#4cc9f0', fontSize: 14, fontWeight:'bold' }}>Products</Text>
-          ), }}
+            <Text
+              style={{ color: "#4cc9f0", fontSize: 14, fontWeight: "bold" }}
+            >
+              Products
+            </Text>
+          ),
+        }}
       />
       <Tabs.Screen
         name="Shopping Cart"
         component={ShoppingCart}
-        options={{ headerShown: false,
-          tabBarIcon: ({}) => (
-            <View>
-            <Ionicons name="cart" color='green' size={40} />
-            <Badge value={useSelector(selectCount)} status="error" containerStyle={{ position: 'absolute', top: -4, right: -4 }}/>
-          </View>
-        ),
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <TabBarIcon />,
           tabBarLabel: () => (
-            <Text style={{ color: 'green', fontSize: 14, fontWeight:'bold' }}>Shopping Cart</Text>
-          ), }}
+            <Text style={{ color: "green", fontSize: 14, fontWeight: "bold" }}>
+              Shopping Cart
+            </Text>
+          ),
+        }}
       />
     </Tabs.Navigator>
   );
@@ -55,38 +72,38 @@ export default function App() {
   return (
     <>
       <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Category"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: c.bkgcol,
-            },
-          }}
-        >
-          <Stack.Screen
-            name="Splash"
-            component={Splash}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Category"
-            component={CategoryTabs}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ProductList"
-            component={ProductList}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ProductDetail"
-            component={ProductDetail}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-      <Toast />
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Category"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: c.bkgcol,
+              },
+            }}
+          >
+            <Stack.Screen
+              name="Splash"
+              component={Splash}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Category"
+              component={CategoryTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ProductList"
+              component={ProductList}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ProductDetail"
+              component={ProductDetail}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <Toast />
       </Provider>
     </>
   );
