@@ -10,14 +10,36 @@ import { createStackNavigator } from "@react-navigation/stack";
 import TabIcon from "../components/TabIcon";
 
 const Tabs = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const ProductStack = createStackNavigator();
+
+function ProductStackScreen() {
+  return (
+    <ProductStack.Navigator>
+      <ProductStack.Screen
+        name="Category"
+        component={Category}
+        options={{ headerShown: false }}
+      />
+      <ProductStack.Screen
+        name="ProductList"
+        component={ProductList}
+        options={{ headerShown: false }}
+      />
+      <ProductStack.Screen
+        name="ProductDetail"
+        component={ProductDetail}
+        options={{ headerShown: false }}
+      />
+    </ProductStack.Navigator>
+  );
+}
 
 export default function CategoryTabs() {
   return (
     <Tabs.Navigator>
       <Tabs.Screen
         name="Products"
-        component={Category}
+        component={ProductStackScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({}) => (

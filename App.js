@@ -34,16 +34,6 @@ export default function App() {
               component={CategoryTabs}
               options={{ headerShown: false }}
             />
-            <Stack.Screen
-              name="ProductList"
-              component={ProductList}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ProductDetail"
-              component={ProductDetail}
-              options={{ headerShown: false }}
-            />
           </Stack.Navigator>
         </NavigationContainer>
         <Toast />
