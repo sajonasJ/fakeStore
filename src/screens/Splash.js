@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,18 +17,19 @@ const splashImage = require("../public/splash.png");
 
 export default function Splash({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
-//navigate to category page
-  const handlePress = () => {
-    navigation.navigate("Category");
-  };
-//setImage to false
+
+  // Navigate to the Category screen after 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.navigate("Category");
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Set isLoading to false when image is loaded
   const handleImageLoad = () => {
     setIsLoading(false);
-  };
-  //set the button to true when image finishes loading
-  const handleBtn = () => {
-    setIsVisible(true);
   };
 
   return (
@@ -49,16 +50,7 @@ export default function Splash({ navigation }) {
       <ImageBackground
         source={splashImage}
         style={styles.container}
-        onLoad={handleBtn}
-      >
-        <View style={styles.innerContainer}>
-          {isVisible && (
-            <TouchableOpacity style={styles.button} onPress={handlePress}>
-              <Text style={styles.buttonText}>Enter</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </ImageBackground>
+      />
     </>
   );
 }

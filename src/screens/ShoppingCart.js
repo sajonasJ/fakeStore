@@ -26,10 +26,11 @@ export default function ShoppingCart({ navigation }) {
     (total, item) => total + item.price * item.count,
     0
   );
-
+ // State to hold unique items with their count
   const [uniqueCart, setUniqueCart] = useState([]);
 
   useEffect(() => {
+     // Update unique items with count whenever cart changes
     const updatedUniqueCart = cart.reduce((acc, current) => {
       const existingItemIndex = acc.findIndex((item) => item.id === current.id);
       if (existingItemIndex !== -1) {

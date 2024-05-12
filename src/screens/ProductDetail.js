@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
-import { selectCart, selectCount } from '../reducers/counterSlice';
+import React, { useState } from "react";
 import {
   StatusBar,
   View,
@@ -46,11 +44,6 @@ export default function ProductDetail({ route, navigation }) {
       visibilityTime: 1000,
     });
   };
-  const cart = useSelector(selectCart);
-  const cartnum = useSelector(selectCount);
-
-  useEffect(() => {
-  }, [cart, cartnum]);
 
   return (
     <View style={styles.container}>
