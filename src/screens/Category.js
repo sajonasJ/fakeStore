@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { loadProductData, selectProduct } from "../reducers/productSlice";
+import Header from "../components/Header";
 import {
   StatusBar,
   View,
@@ -9,10 +11,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import Header from "../components/Header";
-import { fontSize as f, colours as c } from '../constants/constants';
-import { loadProductData, selectProduct } from "../reducers/productSlice";
-
+import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function Category({ navigation }) {
   const dispatch = useDispatch();
@@ -33,28 +32,30 @@ export default function Category({ navigation }) {
 
   useEffect(() => {
     if (productData) {
-      const cat = productData.map(item => item.category);
+      const cat = productData.map((item) => item.category);
       const uniqueCategories = [
         ...new Set(productData.map((item) => capFirstLetter(item.category))),
       ];
-      console.log('getting data')
+      console.log("getting data");
       setCategories(uniqueCategories);
     }
   }, [productData]);
 
   const handlePress = (category) => {
-    console.log('handlepress')
-    const productsInCategory = productData.filter(product => product.category.toLowerCase() === category.toLowerCase());
-    navigation.navigate("ProductList", { category, products: productsInCategory });
+    console.log("handlepress");
+    const productsInCategory = productData.filter(
+      (product) => product.category.toLowerCase() === category.toLowerCase()
+    );
+    navigation.navigate("ProductList", {
+      category,
+      products: productsInCategory,
+    });
   };
-
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
-    
       <Header title="Categories" />
-
       <View style={styles.catList}>
         {loading ? (
           <ActivityIndicator
@@ -94,13 +95,13 @@ const styles = StyleSheet.create({
     marginTop: 55,
   },
   activityIndicator: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   //header
   header: {
