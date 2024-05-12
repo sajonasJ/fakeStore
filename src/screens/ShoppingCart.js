@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCart, selectCount, increment, decrement } from "../reducers/counterSlice";
+import {
+  selectCart,
+  selectCount,
+  increment,
+  decrement,
+} from "../reducers/counterSlice";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   View,
@@ -17,7 +22,10 @@ export default function ShoppingCart({ navigation }) {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const itemCount = useSelector(selectCount);
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.count, 0);
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.count,
+    0
+  );
 
   const [uniqueCart, setUniqueCart] = useState([]);
 
@@ -37,18 +45,18 @@ export default function ShoppingCart({ navigation }) {
 
   const handleAdd = (product) => {
     dispatch(increment(product));
-  }
-  
+  };
+
   const handleRemove = (product) => {
     dispatch(decrement(product));
-  }
+  };
 
   return (
     <View style={styles.container}>
       <Header title="Shopping Cart" />
       <View style={styles.catList}>
         <FlatList
-          data={uniqueCart}
+          data={uniqueCart.filter((item) => item.count > 0)}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -69,9 +77,7 @@ export default function ShoppingCart({ navigation }) {
                       <Text
                         style={styles.catListPrice}
                       >{`Price: $${item.price}`}</Text>
-                      <Text>
-                        Count: {item.count}
-                      </Text>
+                      <Text>Count: {item.count}</Text>
                     </View>
                     <View style={styles.btnIcons}>
                       <Ionicons
@@ -118,18 +124,18 @@ export default function ShoppingCart({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  btnIcons:{
-    flexDirection: 'row',
-    justifyContent:'center',
-    alignItems:'center',
-    gap:15,
-    paddingRight:15,
+  btnIcons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 15,
+    paddingRight: 15,
   },
   opt: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   textsBx: {
-    flex:1,
+    flex: 1,
   },
   //page
   totalRes: {
