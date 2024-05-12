@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "#fff",
     width: "100%",
-    borderWidth: 1,
+    // borderWidth: 1,
     marginTop: 55,
   },
   //header

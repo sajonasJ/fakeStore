@@ -85,7 +85,10 @@ const styles = StyleSheet.create({
   },
   totalItems: {
     padding:5,
-    borderWidth:1,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    borderRightWidth:2,
+    borderColor:'lightgray',
     flex: 1,
     width: "100%",
     justifyContent: "flex-start",
@@ -93,7 +96,9 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   totalPrice: {
-    borderWidth:1,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    borderColor:'lightgray',
     padding:5,
     flex: 1,
     width: "100%",
@@ -103,9 +108,13 @@ const styles = StyleSheet.create({
   },
   totals: {
     flexDirection: "row",
-
     flex: 1,
     width: "100%",
+    backgroundColor: '#fff',
+    shadowColor: "#000",
+    flex:1,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
 
   },
   container: {
@@ -124,7 +133,6 @@ const styles = StyleSheet.create({
     height: "80%",
   },
   catListBox: {
-    // borderWidth: 1,
     width: "100%",
     backgroundColor: c.bkgcol,
     padding: 5,
@@ -156,12 +164,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   imageBx: {
-    borderColor: c.bxCol,
+    // borderColor: c.bxCol,
     aspectRatio: 1,
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   imageContainer: {
-    borderWidth: 1,
+    // borderWidth: 1,
     aspectRatio: 1,
     width: "25%",
   },

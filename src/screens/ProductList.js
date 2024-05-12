@@ -149,12 +149,17 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     width: "25%",
   },
-  // bottom
-  bottom: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+// bottom
+bottom: {
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: '#fff',
+  shadowColor: "#000",
+  flex:1,
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+},
   imageLoader: {
     position: "absolute",
     top: 0,
