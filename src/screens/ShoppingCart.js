@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectCart, selectCount } from "../reducers/counterSlice";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import {
   View,
@@ -20,14 +21,12 @@ export default function ShoppingCart({ navigation }) {
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
 
   const uniqueCart = cart.reduce((acc, current) => {
-    const x = acc.find(item => item.id === current.id);
+    const x = acc.find((item) => item.id === current.id);
     if (!x) {
       return acc.concat([{ ...current, count: 1 }]);
     } else {
-      return acc.map(item =>
-        item.id === current.id
-          ? { ...item, count: item.count + 1 }
-          : item
+      return acc.map((item) =>
+        item.id === current.id ? { ...item, count: item.count + 1 } : item
       );
     }
   }, []);
@@ -39,28 +38,50 @@ export default function ShoppingCart({ navigation }) {
           data={uniqueCart}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.catListBox}
-            onPress={() => {
-              navigation.navigate('ProductDetail', { item });
-            }}>
+            <TouchableOpacity
+              style={styles.catListBox}
+              onPress={() => {
+                navigation.navigate("ProductDetail", { item });
+              }}
+            >
               <View style={styles.itemBox}>
                 <View style={styles.imageContainer}>
                   <Image source={{ uri: item.image }} style={styles.imageBx} />
                 </View>
                 <View style={styles.catListTextBx}>
                   <Text style={styles.catListText}>{item.title}</Text>
-                  <Text
-                    style={styles.catListPrice}
-                  >{`Price: $${item.price}`}</Text>
-                  <Text>
-                    Rate: {item.rating.rate}, Count: {item.rating.count}
-                  </Text>
+
+                  <View style={styles.opt}>
+                    <View style={styles.textsBx}>
+                      <Text
+                        style={styles.catListPrice}
+                      >{`Price: $${item.price}`}</Text>
+                      <Text>
+                        Rate: {item.rating.rate}, Count: {item.rating.count}
+                      </Text>
+                    </View>
+                    <View style={styles.btnIcons}>
+                      <Ionicons
+                        name="add-circle-outline"
+                        size={24}
+                        color="black"
+                        onPress={handleAdd}
+                      />
+                      <Ionicons
+                        name="remove-circle-outline"
+                        size={24}
+                        color="black"
+                        onPress={handleRemove}
+                      />
+                    </View>
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
           )}
         />
       </View>
+
       <View style={styles.totals}>
         <View style={styles.totalItems}>
           <View style={styles.totalTitle}>
@@ -83,8 +104,13 @@ export default function ShoppingCart({ navigation }) {
   );
 }
 
-
 const styles = StyleSheet.create({
+  opt: {
+    borderWidth: 1,
+  },
+  textsBx: {
+    borderWidth: 1,
+  },
   //page
   totalRes: {
     alignSelf: "center",
@@ -99,11 +125,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   totalItems: {
-    padding:5,
+    padding: 5,
     borderTopWidth: 2,
     borderBottomWidth: 2,
-    borderRightWidth:2,
-    borderColor:'lightgray',
+    borderRightWidth: 2,
+    borderColor: "lightgray",
     flex: 1,
     width: "100%",
     justifyContent: "flex-start",
@@ -113,8 +139,8 @@ const styles = StyleSheet.create({
   totalPrice: {
     borderTopWidth: 2,
     borderBottomWidth: 2,
-    borderColor:'lightgray',
-    padding:5,
+    borderColor: "lightgray",
+    padding: 5,
     flex: 1,
     width: "100%",
     justifyContent: "flex-start",
@@ -125,12 +151,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     width: "100%",
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     shadowColor: "#000",
-    flex:1,
+    flex: 1,
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
   },
   container: {
     flex: 1,
