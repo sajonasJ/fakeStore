@@ -15,7 +15,7 @@ import { Rating } from "react-native-ratings";
 import CsBtn from "../components/CsBtn";
 import Header from "../components/Header";
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../reducers/counterSlice';
+import { increment } from '../reducers/counterSlice';
 import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function ProductDetail({ route, navigation }) {
@@ -31,7 +31,7 @@ export default function ProductDetail({ route, navigation }) {
 
   const handleCart = () => {
     const product = { id, title, rating, price, description, image };
-    dispatch(addToCart(product));
+    dispatch(increment(product));
 
     Toast.show({
       type: "success",

@@ -1,8 +1,7 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { selectCart, selectCount } from "../reducers/counterSlice";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCart, selectCount, increment, decrement } from "../reducers/counterSlice";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
 import {
   View,
   Text,
@@ -15,21 +14,35 @@ import Header from "../components/Header";
 import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function ShoppingCart({ navigation }) {
+  const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const itemCount = useSelector(selectCount);
-  console.log(cart);
-  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.count, 0);
 
-  const uniqueCart = cart.reduce((acc, current) => {
-    const x = acc.find((item) => item.id === current.id);
-    if (!x) {
-      return acc.concat([{ ...current, count: 1 }]);
-    } else {
-      return acc.map((item) =>
-        item.id === current.id ? { ...item, count: item.count + 1 } : item
-      );
-    }
-  }, []);
+  const [uniqueCart, setUniqueCart] = useState([]);
+
+  useEffect(() => {
+    const updatedUniqueCart = cart.reduce((acc, current) => {
+      const existingItemIndex = acc.findIndex((item) => item.id === current.id);
+      if (existingItemIndex !== -1) {
+        acc[existingItemIndex].count = current.count;
+      } else {
+        acc.push({ ...current });
+      }
+      return acc;
+    }, []);
+
+    setUniqueCart(updatedUniqueCart);
+  }, [cart]);
+
+  const handleAdd = (product) => {
+    dispatch(increment(product));
+  }
+  
+  const handleRemove = (product) => {
+    dispatch(decrement(product));
+  }
+
   return (
     <View style={styles.container}>
       <Header title="Shopping Cart" />
@@ -57,21 +70,21 @@ export default function ShoppingCart({ navigation }) {
                         style={styles.catListPrice}
                       >{`Price: $${item.price}`}</Text>
                       <Text>
-                        Rate: {item.rating.rate}, Count: {item.rating.count}
+                        Count: {item.count}
                       </Text>
                     </View>
                     <View style={styles.btnIcons}>
                       <Ionicons
-                        name="add-circle-outline"
-                        size={24}
-                        color="black"
-                        onPress={handleAdd}
+                        name="add-circle"
+                        size={35}
+                        color="green"
+                        onPress={() => handleAdd(item)}
                       />
                       <Ionicons
-                        name="remove-circle-outline"
-                        size={24}
-                        color="black"
-                        onPress={handleRemove}
+                        name="remove-circle"
+                        size={36}
+                        color="maroon"
+                        onPress={() => handleRemove(item)}
                       />
                     </View>
                   </View>
@@ -105,11 +118,18 @@ export default function ShoppingCart({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  btnIcons:{
+    flexDirection: 'row',
+    justifyContent:'center',
+    alignItems:'center',
+    gap:15,
+    paddingRight:15,
+  },
   opt: {
-    borderWidth: 1,
+    flexDirection: 'row',
   },
   textsBx: {
-    borderWidth: 1,
+    flex:1,
   },
   //page
   totalRes: {
