@@ -36,13 +36,11 @@ export default function Category({ navigation }) {
       const uniqueCategories = [
         ...new Set(productData.map((item) => capFirstLetter(item.category))),
       ];
-      console.log("getting data");
       setCategories(uniqueCategories);
     }
   }, [productData]);
 
   const handlePress = (category) => {
-    console.log("handlepress");
     const productsInCategory = productData.filter(
       (product) => product.category.toLowerCase() === category.toLowerCase()
     );

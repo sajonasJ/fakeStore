@@ -29,12 +29,10 @@ export default function ProductList({ route }) {
 
 //make sure activity indicator is on when image starts loading
   const handleImageLoadStart = (id) => {
-    console.log('ImageLoadStart')
     setImageStatus((prevStatus) => ({ ...prevStatus, [id]: "loading" }));
   };
 //make sure activity indicator is off when image stops loading
   const handleImageLoadEnd = (id) => {
-    console.log('ImageLoadEnd')
     setImageStatus((prevStatus) => ({ ...prevStatus, [id]: "loaded" }));
   };
   return (

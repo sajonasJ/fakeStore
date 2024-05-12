@@ -21,7 +21,7 @@ import { fontSize as f, colours as c } from "../constants/constants";
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
   const item = route.params?.item;
-  const { title, rating, price, description, image } = item || {};
+  const { id, title, rating, price, description, image } = item || {};
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ export default function ProductDetail({ route, navigation }) {
   };
 
   const handleCart = () => {
-    const product = { title, rating, price, description, image };
+    const product = { id, title, rating, price, description, image };
     dispatch(addToCart(product));
 
     Toast.show({
@@ -50,7 +50,6 @@ export default function ProductDetail({ route, navigation }) {
   const cartnum = useSelector(selectCount);
 
   useEffect(() => {
-    console.log('Cart items:', cartnum);
   }, [cart, cartnum]);
 
   return (

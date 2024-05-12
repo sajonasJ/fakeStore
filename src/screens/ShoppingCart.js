@@ -16,18 +16,31 @@ import { fontSize as f, colours as c } from "../constants/constants";
 export default function ShoppingCart({ navigation }) {
   const cart = useSelector(selectCart);
   const itemCount = useSelector(selectCount);
+  console.log(cart);
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+
+  const uniqueCart = cart.reduce((acc, current) => {
+    const x = acc.find(item => item.id === current.id);
+    if (!x) {
+      return acc.concat([{ ...current, count: 1 }]);
+    } else {
+      return acc.map(item =>
+        item.id === current.id
+          ? { ...item, count: item.count + 1 }
+          : item
+      );
+    }
+  }, []);
   return (
     <View style={styles.container}>
       <Header title="Shopping Cart" />
       <View style={styles.catList}>
         <FlatList
-          data={cart}
+          data={uniqueCart}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.catListBox}
             onPress={() => {
-              console.log('here',item);
               navigation.navigate('ProductDetail', { item });
             }}>
               <View style={styles.itemBox}>
@@ -69,6 +82,8 @@ export default function ShoppingCart({ navigation }) {
     </View>
   );
 }
+
+
 const styles = StyleSheet.create({
   //page
   totalRes: {
