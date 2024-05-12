@@ -18,6 +18,7 @@ import {
 import Header from "../components/Header";
 import { fontSize as f, colours as c } from "../constants/constants";
 
+
 export default function ShoppingCart({ navigation }) {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
@@ -55,76 +56,89 @@ export default function ShoppingCart({ navigation }) {
   return (
     <View style={styles.container}>
       <Header title="Shopping Cart" />
-      <View style={styles.catList}>
-        <FlatList
-          data={uniqueCart.filter((item) => item.count > 0)}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.catListBox}
-              onPress={() => {
-                navigation.navigate("ProductDetail", { item });
-              }}
-            >
-              <View style={styles.itemBox}>
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: item.image }} style={styles.imageBx} />
-                </View>
-                <View style={styles.catListTextBx}>
-                  <Text style={styles.catListText}>{item.title}</Text>
+      {uniqueCart.length === 0 ? (
+        <Text style={styles.emptyCartText}>Shopping Cart is empty</Text>
+      ) : (
+        <View style={styles.catList}>
+          <FlatList
+            data={uniqueCart.filter((item) => item.count > 0)}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.catListBox}
+                onPress={() => {
+                  navigation.navigate("ProductDetail", { item });
+                }}
+              >
+                <View style={styles.itemBox}>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={{ uri: item.image }}
+                      style={styles.imageBx}
+                    />
+                  </View>
+                  <View style={styles.catListTextBx}>
+                    <Text style={styles.catListText}>{item.title}</Text>
 
-                  <View style={styles.opt}>
-                    <View style={styles.textsBx}>
-                      <Text
-                        style={styles.catListPrice}
-                      >{`Price: $${item.price}`}</Text>
-                      <Text>Count: {item.count}</Text>
-                    </View>
-                    <View style={styles.btnIcons}>
-                      <Ionicons
-                        name="add-circle"
-                        size={35}
-                        color="green"
-                        onPress={() => handleAdd(item)}
-                      />
-                      <Ionicons
-                        name="remove-circle"
-                        size={36}
-                        color="maroon"
-                        onPress={() => handleRemove(item)}
-                      />
+                    <View style={styles.opt}>
+                      <View style={styles.textsBx}>
+                        <Text style={styles.catListPrice}>{`Price: $${
+                          item.price
+                        }`}</Text>
+                        <Text>Count: {item.count}</Text>
+                      </View>
+                      <View style={styles.btnIcons}>
+                        <Ionicons
+                          name="add-circle"
+                          size={35}
+                          color="green"
+                          onPress={() => handleAdd(item)}
+                        />
+                        <Ionicons
+                          name="remove-circle"
+                          size={36}
+                          color="maroon"
+                          onPress={() => handleRemove(item)}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-
-      <View style={styles.totals}>
-        <View style={styles.totalItems}>
-          <View style={styles.totalTitle}>
-            <Text style={styles.totalsTitleTxt}>Total Items:</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      )}
+      {uniqueCart.length > 0 && (
+        <View style={styles.totals}>
+          <View style={styles.totalItems}>
+            <View style={styles.totalTitle}>
+              <Text style={styles.totalsTitleTxt}>Total Items:</Text>
+            </View>
+            <View style={styles.totalRes}>
+              <Text style={styles.totalsTxt}>{itemCount}</Text>
+            </View>
           </View>
-          <View style={styles.totalRes}>
-            <Text style={styles.totalsTxt}>{itemCount}</Text>
+          <View style={styles.totalPrice}>
+            <View style={styles.totalTitle}>
+              <Text style={styles.totalsTitleTxt}>Total Price: </Text>
+            </View>
+            <View style={styles.totalRes}>
+              <Text style={styles.totalsTxt}>${totalPrice.toFixed(2)}</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.totalPrice}>
-          <View style={styles.totalTitle}>
-            <Text style={styles.totalsTitleTxt}>Total Price: </Text>
-          </View>
-          <View style={styles.totalRes}>
-            <Text style={styles.totalsTxt}>${totalPrice.toFixed(2)}</Text>
-          </View>
-        </View>
-      </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  emptyCartText: {
+    fontSize: f.large,
+    textAlign: "center",
+    marginTop: 80,
+  },
   btnIcons: {
     flexDirection: "row",
     justifyContent: "center",
