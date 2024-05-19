@@ -3,7 +3,7 @@ import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ShoppingCart from "../screens/ShoppingCart";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import ProductStackScreen from './ProductStackScreen'; // import the ProductStackScreen component
+import ProductStackScreen from './ProductStack'; // import the ProductStackScreen component
 import TabIcon from "../components/TabIcon";
 
 const Tabs = createBottomTabNavigator();

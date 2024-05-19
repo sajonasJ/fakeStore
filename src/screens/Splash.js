@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
-  View,
   StatusBar,
-  TouchableOpacity,
   Dimensions,
   ActivityIndicator,
   Image,
