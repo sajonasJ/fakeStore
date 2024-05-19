@@ -31,17 +31,18 @@ export default function ShoppingCart({ navigation }) {
   const [uniqueCart, setUniqueCart] = useState([]);
 
   useEffect(() => {
-     // Update unique items with count whenever cart changes
     const updatedUniqueCart = cart.reduce((acc, current) => {
-      const existingItemIndex = acc.findIndex((item) => item.id === current.id);
-      if (existingItemIndex !== -1) {
-        acc[existingItemIndex].count = current.count;
-      } else {
-        acc.push({ ...current });
+      if (current.count > 0) {
+        const existingItemIndex = acc.findIndex((item) => item.id === current.id);
+        if (existingItemIndex !== -1) {
+          acc[existingItemIndex].count = current.count;
+        } else {
+          acc.push({ ...current });
+        }
       }
       return acc;
     }, []);
-
+  
     setUniqueCart(updatedUniqueCart);
   }, [cart]);
 
