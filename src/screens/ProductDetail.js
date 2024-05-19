@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
@@ -100,8 +101,10 @@ export default function ProductDetail({ route, navigation }) {
                 <Text style={styles.descNameTxt}>Description:</Text>
               </View>
               <View style={styles.descDetBx}>
+                <ScrollView>
                 <Text style={styles.descDetTxt}>{description}</Text>
-              </View>
+                </ScrollView>
+                </View>
             </View>
           </>
         )}
