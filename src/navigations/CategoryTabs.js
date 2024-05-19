@@ -1,38 +1,12 @@
+// CategoryTabs.js
 import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Category from "../screens/Category";
 import ShoppingCart from "../screens/ShoppingCart";
-import ProductList from "../screens/ProductList";
-import ProductDetail from "../screens/ProductDetail";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { createStackNavigator } from "@react-navigation/stack";
-
+import ProductStackScreen from './ProductStackScreen'; // import the ProductStackScreen component
 import TabIcon from "../components/TabIcon";
 
 const Tabs = createBottomTabNavigator();
-const ProductStack = createStackNavigator();
-
-function ProductStackScreen() {
-  return (
-    <ProductStack.Navigator>
-      <ProductStack.Screen
-        name="Category"
-        component={Category}
-        options={{ headerShown: false }}
-      />
-      <ProductStack.Screen
-        name="ProductList"
-        component={ProductList}
-        options={{ headerShown: false }}
-      />
-      <ProductStack.Screen
-        name="ProductDetail"
-        component={ProductDetail}
-        options={{ headerShown: false }}
-      />
-    </ProductStack.Navigator>
-  );
-}
 
 export default function CategoryTabs() {
   return (
@@ -78,6 +52,5 @@ export default function CategoryTabs() {
         }}
       />
     </Tabs.Navigator>
-    
   );
 }
