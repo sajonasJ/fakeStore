@@ -7,6 +7,10 @@ import Toast from "react-native-toast-message";
 import { colours as c } from "./src/constants/constants";
 import CategoryTabs from "./src/navigations/CategoryTabs";
 import SignUp from "./src/screens/SignUp";
+import SignIn from "./src/screens/SignIn";
+import Profile from "./src/screens/Profile";
+import Orders from "./src/screens/Orders";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -15,7 +19,7 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="SignUp"
+            initialRouteName="Category"
             screenOptions={{
               headerStyle: {
                 backgroundColor: c.bkgcol,
@@ -35,6 +39,21 @@ export default function App() {
             <Stack.Screen
               name="SignUp"
               component={SignUp}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignIn"
+              component={SignIn}
+              options={{ headerShown: false }}
+            />
+                   <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{ headerShown: false }}
+            />
+                   <Stack.Screen
+              name="Orders"
+              component={Orders}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

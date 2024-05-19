@@ -5,6 +5,7 @@ import ShoppingCart from "../screens/ShoppingCart";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ProductStackScreen from './ProductStack'; // import the ProductStackScreen component
 import TabIcon from "../components/TabIcon";
+import Profile from "../screens/Profile";
 
 const Tabs = createBottomTabNavigator();
 
@@ -16,9 +17,7 @@ export default function CategoryTabs() {
         component={ProductStackScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({}) => (
-            <Ionicons name="menu" color="#4cc9f0" size={40} />
-          ),
+            tabBarIcon: () => <TabIcon name="menu" color="#4cc9f0"/>,
           tabBarLabel: () => (
             <Text
               style={{
@@ -37,7 +36,7 @@ export default function CategoryTabs() {
         component={ShoppingCart}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon />,
+          tabBarIcon: () => <TabIcon name="cart" color="green"/>,
           tabBarLabel: () => (
             <Text
               style={{
@@ -47,6 +46,25 @@ export default function CategoryTabs() {
               }}
             >
               Shopping Cart
+            </Text>
+          ),
+        }}
+      />
+       <Tabs.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <TabIcon name="person-circle" color="blue"/>,
+          tabBarLabel: () => (
+            <Text
+              style={{
+                color: "blue",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              Profile
             </Text>
           ),
         }}

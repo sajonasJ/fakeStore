@@ -4,11 +4,11 @@ import { Badge } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { selectCount } from "../reducers/counterSlice";
 
-export default function TabIcon() {
+export default function TabIcon({ name, color, size = 40 }) {
   const count = useSelector(selectCount);
   return (
     <View>
-      <Ionicons name="cart" color="green" size={40} />
+      <Ionicons name={name} color={color} size={size} />
       {count > 0 && (
         <Badge
           value={count}
