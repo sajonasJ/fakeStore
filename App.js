@@ -15,7 +15,7 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="Splash"
+            initialRouteName="Category"
             screenOptions={{
               headerStyle: {
                 backgroundColor: c.bkgcol,

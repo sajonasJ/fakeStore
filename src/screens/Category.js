@@ -53,7 +53,7 @@ export default function Category({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
-      <Header title="Categories" />
+      <Header title="Product Categories" />
       <View style={styles.catList}>
         {loading ? (
           <ActivityIndicator
@@ -78,11 +78,21 @@ export default function Category({ navigation }) {
           />
         )}
       </View>
+      <View style={styles.footer}>
+        <Text>jonas.sajonas@griffithuni.edu.au</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  footer: { borderWidth: 1,
+    width:'100%',
+    justifyContent:'center',
+    alignItems:'center',
+    padding:10,
+    borderColor:'lightgray'
+   },
   //page
   container: {
     flex: 1,
