@@ -65,7 +65,7 @@ export default function CategoryTabs() {
                 fontWeight: "bold",
               }}
             >
-              Shopping Cart
+              My Orders
             </Text>
           ),
         }}
