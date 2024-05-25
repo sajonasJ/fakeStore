@@ -6,7 +6,7 @@ import { colours as c } from "../constants/constants";
 export default function Orders({ navigation }) {
   return (
     <View style={styles.container}>
-      <Header title="Orders" />
+      <Header title="My Orders" />
       <Text>Name</Text>
       <Text>Email</Text>
       <Text>Password</Text>
