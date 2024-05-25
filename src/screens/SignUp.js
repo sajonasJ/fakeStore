@@ -129,6 +129,7 @@ export default function SignUp({ navigation }) {
               {showPassword ? "Hide Password" : "Show Password"}
             </Text>
           </TouchableOpacity>
+          <View style={styles.erBx}>
           {passwordError ? (
             <Text style={styles.errorText}>{passwordError}</Text>
           ) : null}
@@ -141,6 +142,7 @@ export default function SignUp({ navigation }) {
               ))}
             </View>
           )}
+             </View>
           <View style={styles.optionBx}>
             <TouchableOpacity style={styles.button} onPress={handleSignUp}>
               <Text style={styles.buttonText}>Sign Up</Text>
@@ -166,6 +168,10 @@ export default function SignUp({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  erBx: {
+    width: "100%",
+    minHeight: 90,
+  },
   switch: {
     fontSize: 18,
   },
@@ -201,7 +207,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   optionBx: {
-    marginTop: 15,
+    marginTop: 5,
     gap: "100%",
     width: "100%",
     justifyContent: "center",

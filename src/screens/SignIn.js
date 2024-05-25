@@ -8,24 +8,41 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [additionalInput, setAdditionalInput] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  const validateFields = () => {
+    let errors = [];
+
+    !email || !password ? errors.push("All fields are required.") : null;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    !emailRegex.test(email)
+      ? errors.push("Email must contain '@' and '.com'.")
+      : null;
+
+    setErrorMessages(errors);
+
+    return errors.length === 0;
+  };
 
   const handleSignIn = () => {
-    console.log("Sign In pressed");
-    // Handle sign in logic
+    if (validateFields()) {
+      console.log("Sign In pressed");
+      // Handle sign in logic
+    }
   };
 
   const handleClear = () => {
     setEmail("");
     setPassword("");
-    setAdditionalInput("");
+    setErrorMessages([]);
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Header title="Sign In" />
-        <View style={styles.container}>
+        <View style={styles.formContainer}>
           <Text>Email</Text>
           <TextInput
             style={styles.input}
@@ -42,6 +59,17 @@ export default function SignIn({ navigation }) {
             onChangeText={setPassword}
             secureTextEntry
           />
+          <View style={styles.erBx}>
+            {errorMessages.length > 0 && (
+              <View style={styles.errorContainer}>
+                {errorMessages.map((error, index) => (
+                  <Text key={index} style={styles.errorText}>
+                    {error}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
           <View style={styles.optionBx}>
             <TouchableOpacity style={styles.button} onPress={handleSignIn}>
               <Text style={styles.buttonText}>Sign In</Text>
@@ -51,10 +79,13 @@ export default function SignIn({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={styles.optionBx2}>
-            <Text>Switch to:</Text>
+            <Text style={styles.switch}>Switch to:</Text>
             <Button
               title="Sign Up"
-              onPress={() => navigation.navigate("SignUp")}
+              onPress={() => {
+                handleClear();
+                navigation.navigate("SignUp");
+              }}
             />
           </View>
         </View>
@@ -64,6 +95,13 @@ export default function SignIn({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  erBx: {
+    width: "100%",
+    minHeight: 70,
+  },
+  switch: {
+    fontSize: 18,
+  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -72,8 +110,13 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 55,
   },
-  input: {
+  formContainer: {
     width: "80%",
+    alignItems: "center",
+    marginTop: 55,
+  },
+  input: {
+    width: "100%",
     padding: 10,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -91,21 +134,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   optionBx: {
-    marginTop:55,
-    // borderWidth: 1,
+    marginTop: 15,
     width: "100%",
-    padding: 15,
+    gap:"100%",
     justifyContent: "center",
-    gap: "100%",
     flexDirection: "row",
   },
   optionBx2: {
-    // borderWidth: 1,
+    marginTop: 15,
     width: "100%",
-    padding: 15,
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
-    // gap: "100%",
     flexDirection: "row",
+  },
+  errorContainer: {
+    alignItems: "flex-start",
+  },
+  errorText: {
+    color: "red",
   },
 });
