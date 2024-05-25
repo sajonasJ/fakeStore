@@ -6,6 +6,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import ProductStackScreen from './ProductStack'; // import the ProductStackScreen component
 import TabIcon from "../components/TabIcon";
 import Profile from "../screens/Profile";
+import Orders from "../screens/Orders";
 
 const Tabs = createBottomTabNavigator();
 
@@ -41,6 +42,25 @@ export default function CategoryTabs() {
             <Text
               style={{
                 color: "green",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              Shopping Cart
+            </Text>
+          ),
+        }}
+      />
+            <Tabs.Screen
+        name="My Orders"
+        component={Orders}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <TabIcon name="bag" color="red"/>,
+          tabBarLabel: () => (
+            <Text
+              style={{
+                color: "red",
                 fontSize: 14,
                 fontWeight: "bold",
               }}

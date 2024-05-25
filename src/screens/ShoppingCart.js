@@ -42,7 +42,7 @@ export default function ShoppingCart({ navigation }) {
       }
       return acc;
     }, []);
-  
+
     setUniqueCart(updatedUniqueCart);
   }, [cart]);
 
