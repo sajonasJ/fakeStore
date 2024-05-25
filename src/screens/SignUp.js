@@ -27,43 +27,42 @@ export default function SignUp({ navigation }) {
   }, [password, confirmPassword]);
 
   const validatePasswords = () => {
-    if (password && confirmPassword && password !== confirmPassword) {
-      setPasswordError("Passwords do not match.");
-    } else {
-      setPasswordError("");
-    }
+    setPasswordError(
+      password && confirmPassword && password !== confirmPassword
+        ? "Passwords do not match."
+        : ""
+    );
   };
 
   const validateFields = () => {
     let errors = [];
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      errors.push("All fields are required.");
-    }
+    !firstName || !lastName || !email || !password || !confirmPassword
+      ? errors.push("All fields are required.")
+      : null;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      errors.push("Email must contain '@' and '.com'.");
-    }
+    !emailRegex.test(email)
+      ? errors.push("Email must contain '@' and '.com'.")
+      : null;
 
     const nameRegex = /^[a-zA-Z]+$/;
-    if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
-      errors.push("Names cannot contain numbers or special characters.");
-    }
+    !nameRegex.test(firstName) || !nameRegex.test(lastName)
+      ? errors.push("Names cannot contain numbers or special characters.")
+      : null;
 
-    if (passwordError) {
-      errors.push(passwordError);
-    }
+    passwordError ? errors.push(passwordError) : null;
 
     setErrorMessages(errors);
+
+    return errors.length === 0;
   };
 
-  const handleSignIn = () => {
-    validateFields();
-    if (errorMessages.length === 0) {
-      console.log("Sign In pressed");
+  const handleSignUp = () => {
+    if (validateFields()) {
+      console.log("Sign Up pressed");
       handleClear();
-      navigation.navigate("SignIn");
+      navigation.navigate("NextScreen");
     }
   };
 
@@ -143,7 +142,7 @@ export default function SignUp({ navigation }) {
             </View>
           )}
           <View style={styles.optionBx}>
-            <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+            <TouchableOpacity style={styles.button} onPress={handleSignUp}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleClear}>
@@ -154,7 +153,10 @@ export default function SignUp({ navigation }) {
             <Text style={styles.switch}>Switch to:</Text>
             <Button
               title="Sign In"
-              onPress={() => {handleClear(), navigation.navigate("SignIn")}}
+              onPress={() => {
+                handleClear();
+                navigation.navigate("SignIn");
+              }}
             />
           </View>
         </View>
