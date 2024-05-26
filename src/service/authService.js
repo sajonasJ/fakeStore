@@ -1,6 +1,6 @@
-// service/authService.js
 const server = "172.16.11.240";
 const apiBaseURL = `http://${server}:3000`;
+
 // Sign-Up User
 export const signUpUser = async (userData) => {
   try {

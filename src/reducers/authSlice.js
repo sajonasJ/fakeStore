@@ -1,4 +1,3 @@
-// slices/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { signUpUser, signInUser } from "../service/authService";
 
@@ -12,6 +11,9 @@ const initialState = {
 export const userSignUp = createAsyncThunk("auth/userSignUp", async (userData, thunkAPI) => {
   try {
     const response = await signUpUser(userData);
+    if (response.status === "error") {
+      return thunkAPI.rejectWithValue(response.message);
+    }
     return response;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);

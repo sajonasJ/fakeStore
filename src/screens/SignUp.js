@@ -18,8 +18,7 @@ import { colours as c } from "../constants/constants";
 import { userSignUp, selectAuth } from "../reducers/authSlice";
 
 export default function SignUp({ navigation }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -45,7 +44,7 @@ export default function SignUp({ navigation }) {
   const validateFields = () => {
     let errors = [];
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       errors.push("All fields are required.");
     }
 
@@ -54,9 +53,9 @@ export default function SignUp({ navigation }) {
       errors.push("Email must contain '@' and '.com'.");
     }
 
-    const nameRegex = /^[a-zA-Z]+$/;
-    if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
-      errors.push("Names cannot contain numbers or special characters.");
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    if (!nameRegex.test(name)) {
+      errors.push("Name cannot contain numbers or special characters.");
     }
 
     if (password.length < 8) {
@@ -80,7 +79,7 @@ export default function SignUp({ navigation }) {
   const handleSignUp = () => {
     if (validateFields()) {
       const userData = {
-        name: `${firstName} ${lastName}`,
+        name,
         email,
         password,
       };
@@ -89,15 +88,14 @@ export default function SignUp({ navigation }) {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user && !error) {
       handleClear();
       navigation.navigate("Profile"); // Adjust this as needed
     }
-  }, [user, navigation]);
+  }, [user, error, navigation]);
 
   const handleClear = () => {
-    setFirstName("");
-    setLastName("");
+    setName("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
@@ -112,22 +110,13 @@ export default function SignUp({ navigation }) {
 
         <View style={styles.formContainer}>
           <View style={styles.heading}>
-            <Text style={styles.headingTxt}>First Name</Text>
+            <Text style={styles.headingTxt}>Name</Text>
           </View>
           <TextInput
             style={styles.input}
-            placeholder="Enter your first name"
-            value={firstName}
-            onChangeText={(text) => setFirstName(text)}
-          />
-          <View style={styles.heading}>
-            <Text style={styles.headingTxt}>Last Name</Text>
-          </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your last name"
-            value={lastName}
-            onChangeText={(text) => setLastName(text)}
+            placeholder="Enter your name"
+            value={name}
+            onChangeText={(text) => setName(text)}
           />
           <View style={styles.heading}>
             <Text style={styles.headingTxt}>Email</Text>

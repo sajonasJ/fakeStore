@@ -36,7 +36,7 @@ export default function App() {
               component={CategoryTabs}
               options={{ headerShown: false }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="SignUp"
               component={SignUp}
               options={{ headerShown: false }}
@@ -55,7 +55,7 @@ export default function App() {
               name="Orders"
               component={Orders}
               options={{ headerShown: false }}
-            />
+            /> */}
           </Stack.Navigator>
         </NavigationContainer>
         <Toast />
