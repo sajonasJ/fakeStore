@@ -90,7 +90,7 @@ export default function SignUp({ navigation }) {
   useEffect(() => {
     if (user && !error) {
       handleClear();
-      navigation.navigate("Profile"); // Adjust this as needed
+      navigation.navigate("Profile");
     }
   }, [user, error, navigation]);
 

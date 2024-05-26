@@ -11,26 +11,23 @@ export default function Profile({ navigation }) {
   const dispatch = useDispatch();
   const { user } = useSelector(selectAuth);
   const [modalVisible, setModalVisible] = useState(false);
-  const [newFirstName, setNewFirstName] = useState(user?.firstName || "");
-  const [newLastName, setNewLastName] = useState(user?.lastName || "");
+  const [newName, setNewName] = useState(user?.name || "");
   const [newEmail, setNewEmail] = useState(user?.email || "");
 
   useEffect(() => {
     if (user) {
-      setNewFirstName(user.firstName || "");
-      setNewLastName(user.lastName || "");
+      setNewName(user.name || "");
       setNewEmail(user.email || "");
     }
   }, [user]);
 
   const handleConfirm = () => {
-    dispatch(updateProfile({ firstName: newFirstName, lastName: newLastName, email: newEmail }));
+    dispatch(updateProfile({ name: newName, email: newEmail }));
     setModalVisible(false);
   };
 
   const handleCancel = () => {
-    setNewFirstName(user?.firstName || "");
-    setNewLastName(user?.lastName || "");
+    setNewName(user?.name || "");
     setNewEmail(user?.email || "");
     setModalVisible(false);
   };
@@ -52,7 +49,7 @@ export default function Profile({ navigation }) {
             <Text style={styles.detailTxt}>Name:</Text>
           </View>
           <View style={styles.detailBx2}>
-            <Text style={styles.detailTxt2}>{`${user?.firstName || ""} ${user?.lastName || ""}`}</Text>
+            <Text style={styles.detailTxt2}>{user?.name || ""}</Text>
           </View>
         </View>
 
@@ -91,22 +88,13 @@ export default function Profile({ navigation }) {
               </View>
 
               <View style={styles.tag}>
-                <Text style={styles.tagTxt}>First Name:</Text>
+                <Text style={styles.tagTxt}>Name:</Text>
               </View>
               <TextInput
                 style={styles.input}
-                placeholder="First Name"
-                value={newFirstName}
-                onChangeText={setNewFirstName}
-              />
-              <View style={styles.tag}>
-                <Text style={styles.tagTxt}>Last Name:</Text>
-              </View>
-              <TextInput
-                style={styles.input}
-                placeholder="Last Name"
-                value={newLastName}
-                onChangeText={setNewLastName}
+                placeholder="Name"
+                value={newName}
+                onChangeText={setNewName}
               />
               <View style={styles.tag}>
                 <Text style={styles.tagTxt}>Email:</Text>
@@ -136,8 +124,7 @@ export default function Profile({ navigation }) {
       </Modal>
     </View>
   );
-}
-
+} 
 const styles = StyleSheet.create({
   tagTxt: {
     fontSize: 16,

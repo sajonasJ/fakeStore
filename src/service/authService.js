@@ -68,6 +68,9 @@ export const signInUser = async (userData) => {
 
     const data = JSON.parse(textResponse);
     console.log("User signed in successfully:", data);
+    if (data.status === "error") {
+      throw new Error(data.message);
+    }
     return data;
   } catch (error) {
     console.error("Error signing in:", error);

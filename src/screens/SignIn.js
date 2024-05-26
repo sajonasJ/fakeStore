@@ -18,13 +18,11 @@ export default function SignIn({ navigation }) {
   const { user, loading, error } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (user) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Category" }],
-      });
+    if (user && !error) {
+      handleClear();
+      navigation.navigate("Profile");
     }
-  }, [user]);
+  }, [user, error, navigation]);
 
   const validateFields = () => {
     let errors = [];
@@ -114,7 +112,6 @@ export default function SignIn({ navigation }) {
     </TouchableWithoutFeedback>
   );
 }
-
 const styles = StyleSheet.create({
   headingTxt: {
     fontWeight: "bold",
