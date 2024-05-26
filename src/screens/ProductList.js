@@ -80,9 +80,8 @@ export default function ProductList({ route }) {
           onPress={() => navigation.goBack()}
           iconName="backspace"
           color={c.backBtn}
-        >
-          Back
-        </CsBtn>
+          justifyContent="space-evenly"
+          title="Back" />
       </View>
     </View>
   );

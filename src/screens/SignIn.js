@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Button, TextInput } from "react-native";
 import Header from "../components/Header";
+import SubTitle from "../components/SubTitle";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { colours as c } from "../constants/constants";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import CsBtn from "../components/CsBtn";
 
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
@@ -42,6 +44,7 @@ export default function SignIn({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Header title="Sign In" />
+        <SubTitle title="Sign in with your email and password"></SubTitle>
         <View style={styles.formContainer}>
           <Text>Email</Text>
           <TextInput
@@ -71,12 +74,8 @@ export default function SignIn({ navigation }) {
             )}
           </View>
           <View style={styles.optionBx}>
-            <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-              <Text style={styles.buttonText}>Sign In</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleClear}>
-              <Text style={styles.buttonText}>Clear</Text>
-            </TouchableOpacity>
+            <CsBtn onPress={handleSignIn} color={c.cartBtn} title="Confirm" />
+            <CsBtn onPress={handleClear} color={c.backBtn} title="Clear" />
           </View>
           <View style={styles.optionBx2}>
             <Text style={styles.switch}>Switch to:</Text>
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: "80%",
     alignItems: "center",
-    marginTop: 55,
+    marginTop: 10,
   },
   input: {
     width: "100%",
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
   optionBx: {
     marginTop: 15,
     width: "100%",
-    gap:"100%",
+    gap: "100%",
     justifyContent: "center",
     flexDirection: "row",
   },

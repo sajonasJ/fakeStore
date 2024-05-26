@@ -13,8 +13,8 @@ import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
 import CsBtn from "../components/CsBtn";
 import Header from "../components/Header";
-import { useDispatch } from 'react-redux';
-import { increment } from '../reducers/counterSlice';
+import { useDispatch } from "react-redux";
+import { increment } from "../reducers/counterSlice";
 import { fontSize as f, colours as c } from "../constants/constants";
 
 export default function ProductDetail({ route, navigation }) {
@@ -50,7 +50,7 @@ export default function ProductDetail({ route, navigation }) {
     <View style={styles.container}>
       <StatusBar hidden={false} barStyle="auto" />
       <Header title="Product Details" />
-    
+
       <View style={styles.prodList}>
         {isLoading && (
           <View style={styles.aiBox}>
@@ -89,12 +89,16 @@ export default function ProductDetail({ route, navigation }) {
                 onPress={() => navigation.goBack()}
                 iconName="backspace"
                 color="#4cc9f0"
-              >
-                Back
-              </CsBtn>
-              <CsBtn onPress={handleCart} iconName="cart" color={c.cartBtn}>
-                Add to Cart
-              </CsBtn>
+                justifyContent="space-evenly"
+                title="Back"
+              />
+              <CsBtn
+                onPress={handleCart}
+                iconName="cart"
+                justifyContent="space-evenly"
+                color={c.cartBtn}
+                title="Add to Cart"
+              />
             </View>
             <View style={styles.descBx}>
               <View style={styles.descNameBx}>
@@ -102,9 +106,9 @@ export default function ProductDetail({ route, navigation }) {
               </View>
               <View style={styles.descDetBx}>
                 <ScrollView>
-                <Text style={styles.descDetTxt}>{description}</Text>
+                  <Text style={styles.descDetTxt}>{description}</Text>
                 </ScrollView>
-                </View>
+              </View>
             </View>
           </>
         )}

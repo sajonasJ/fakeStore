@@ -19,7 +19,7 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="SignUp"
+            initialRouteName="Orders"
             screenOptions={{
               headerStyle: {
                 backgroundColor: c.bkgcol,

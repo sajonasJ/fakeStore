@@ -11,6 +11,7 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Header from "../components/Header";
 import SubTitle from "../components/SubTitle";
+import CsBtn from "../components/CsBtn";
 import { colours as c } from "../constants/constants";
 
 export default function SignUp({ navigation }) {
@@ -146,12 +147,8 @@ export default function SignUp({ navigation }) {
             )}
           </View>
           <View style={styles.optionBx}>
-            <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-              <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleClear}>
-              <Text style={styles.buttonText}>Clear</Text>
-            </TouchableOpacity>
+            <CsBtn onPress={handleSignUp} color={c.cartBtn} title="Confirm" />
+            <CsBtn onPress={handleClear} color={c.backBtn} title="Cancel" />
           </View>
           <View style={styles.optionBx2}>
             <Text style={styles.switch}>Switch to:</Text>

@@ -3,7 +3,8 @@ import { View, StyleSheet, Text, Button, Modal, TextInput } from "react-native";
 import Header from "../components/Header";
 import { colours as c } from "../constants/constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import CsBtn from "../components/CsBtn";
 
 export default function Profile({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -31,7 +32,7 @@ export default function Profile({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Header title="Profile" />
+      <Header title="User Profile" />
       <View style={styles.infoBx}>
         <View style={styles.dBx}>
           <View style={styles.detailBx}>
@@ -52,20 +53,19 @@ export default function Profile({ navigation }) {
         </View>
       </View>
       <View style={styles.optionBx}>
-        <TouchableOpacity
-          style={styles.button}
+        <CsBtn
           onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.buttonText}>Update</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
+          color={c.cartBtn}
+          title="Update"
+        />
+
+        <CsBtn
           onPress={() => {
             console.log("pressed logout");
           }}
-        >
-          <Text style={styles.buttonText}>Sign Out</Text>
-        </TouchableOpacity>
+          color={c.backBtn}
+          title="Sign Out"
+        />
       </View>
       <Modal
         transparent={true}
@@ -74,50 +74,55 @@ export default function Profile({ navigation }) {
         onRequestClose={() => setModalVisible(false)}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View>
-              <Text style={styles.modalTitle}>Update Profile</Text>
-            </View>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <View>
+                <Text style={styles.modalTitle}>Update Profile</Text>
+              </View>
 
-            <View style={styles.tag}>
-            <Text style={styles.tagTxt}>First Name:</Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="First Name"
-              value={newFirstName}
-              onChangeText={setNewFirstName}
-            />
-            <View style={styles.tag}>
-            <Text style={styles.tagTxt}>Last Name:</Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Last Name"
-              value={newLastName}
-              onChangeText={setNewLastName}
-            />
-            <View style={styles.tag}>
-            <Text style={styles.tagTxt}>Email:</Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={newEmail}
-              onChangeText={setNewEmail}
-              keyboardType="email-address"
-            />
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity style={styles.button} onPress={handleConfirm}>
-                <Text style={styles.buttonText}>Confirm</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleCancel}>
-                <Text style={styles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
+              <View style={styles.tag}>
+                <Text style={styles.tagTxt}>First Name:</Text>
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="First Name"
+                value={newFirstName}
+                onChangeText={setNewFirstName}
+              />
+              <View style={styles.tag}>
+                <Text style={styles.tagTxt}>Last Name:</Text>
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Last Name"
+                value={newLastName}
+                onChangeText={setNewLastName}
+              />
+              <View style={styles.tag}>
+                <Text style={styles.tagTxt}>Email:</Text>
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={newEmail}
+                onChangeText={setNewEmail}
+                keyboardType="email-address"
+              />
+              <View style={styles.modalButtonContainer}>
+                <CsBtn
+                  onPress={handleConfirm}
+                  color={c.cartBtn}
+                  title="Confirm"
+                />
+
+                <CsBtn
+                  onPress={handleCancel}
+                  color={c.backBtn}
+                  title="Cancel"
+                />
+              </View>
             </View>
           </View>
-        </View>
         </TouchableWithoutFeedback>
       </Modal>
     </View>
@@ -125,77 +130,65 @@ export default function Profile({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  tagTxt:{
-    fontSize:16,
-    fontWeight:"bold",
+  tagTxt: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
-  tag:{
-
-    width:"100%",
+  tag: {
+    width: "100%",
     // padding:10,
-    paddingBottom:5,
-    paddingLeft:10,
-    paddingTop:10,
-
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingTop: 10,
   },
   dBx: {
     // borderWidth: 1,
-    backgroundColor:"#dee2e6"
+    backgroundColor: "#f0efeb",
   },
   infoBx: {
     margin: 15,
     width: "100%",
     padding: 15,
     gap: 15,
-    
-  },
-  button: {
-    borderWidth: 1,
-    padding: 5,
-    paddingLeft: 25,
-    paddingRight: 25,
-    borderRadius: 10,
   },
   optionBx: {
     borderWidth: 1,
     width: "100%",
     padding: 15,
-    justifyContent: "center",
-    gap: "100%",
+    justifyContent: "space-evenly",
     flexDirection: "row",
   },
   detailBx: {
     width: "100%",
     paddingLeft: 15,
     paddingTop: 15,
-    paddingRight:15,
-
+    paddingRight: 15,
   },
   detailBx2: {
     paddingBottom: 15,
     paddingLeft: 15,
-    paddingRight:15,
+    paddingRight: 15,
     alignItems: "center",
     justifyContent: "center",
   },
   detailTxt: {
     width: "100%",
     // borderWidth:1,
-    fontSize:20,
-    fontWeight:"bold",
-    paddingBottom:10,
-    paddingTop:10,
-    paddingLeft:5,
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingBottom: 10,
+    paddingTop: 10,
+    paddingLeft: 5,
   },
   detailTxt2: {
     width: "100%",
-    borderWidth:1,
-    borderColor:"#adb5bd",
-    paddingBottom:10,
-    paddingTop:10,
-    paddingLeft:5,
-    fontSize:20,
-    backgroundColor:"white"
+    borderWidth: 1,
+    borderColor: "#adb5bd",
+    paddingBottom: 10,
+    paddingTop: 10,
+    paddingLeft: 5,
+    fontSize: 20,
+    backgroundColor: "white",
   },
   container: {
     flex: 1,
@@ -214,7 +207,8 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: 300,
     padding: 20,
-    backgroundColor: "white",
+    backgroundColor: "#e9ecef",
+
     borderRadius: 10,
     alignItems: "center",
   },
@@ -229,10 +223,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 10,
-    backgroundColor:"#e9ecef",
+    backgroundColor: "white",
   },
   modalButtonContainer: {
-    marginTop:25,
+    marginTop: 25,
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
