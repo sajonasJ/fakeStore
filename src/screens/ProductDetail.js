@@ -42,8 +42,9 @@ export default function ProductDetail({ route, navigation }) {
         fontSize: f.large,
       },
       swipeable: true,
-      bottomOffset: windowHeight / 3,
-      visibilityTime: 1000,
+      bottomOffset:  windowHeight/3,
+      visibilityTime: 3000,
+      props: { style: { zIndex: 9999 } }, 
     });
   };
 

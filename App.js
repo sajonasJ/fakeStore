@@ -58,7 +58,7 @@ export default function App() {
             /> */}
           </Stack.Navigator>
         </NavigationContainer>
-        <Toast />
+        <Toast ref={(ref) => Toast.setRef(ref)} />
       </Provider>
     </>
   );

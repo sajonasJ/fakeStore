@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Modal, TextInput } from "react-native";
+import {   Dimensions,View, StyleSheet, Text, Modal, TextInput } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
-import { colours as c } from "../constants/constants";
+import { fontSize as f, colours as c } from "../constants/constants";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import CsBtn from "../components/CsBtn";
 import { updateProfile, signOut, selectAuth } from "../reducers/authSlice";
@@ -10,6 +10,7 @@ import Toast from "react-native-toast-message";
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
+  const windowHeight = Dimensions.get("window").height;
   const { user, loading, error } = useSelector(selectAuth);
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");
@@ -33,10 +34,10 @@ export default function Profile({ navigation }) {
           text1: 'Profile Updated!',
           text1Style: {
             textAlign: 'center',
-            fontSize: 16,
+            fontSize: f.large,
           },
-          text2: 'Your profile has been updated successfully.',
-          bottomOffset: 360,
+          bottomOffset: windowHeight/3,
+          swipeable: true,
           visibilityTime: 3000,
         });
       } else {
