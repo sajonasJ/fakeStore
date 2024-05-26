@@ -1,6 +1,6 @@
 "use strict";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import fetchProducts from "../service/fakeStoreAPI";
+import {fetchProducts} from "../service/fakeStoreAPI";
 
 const initialState = {
   productData: null,

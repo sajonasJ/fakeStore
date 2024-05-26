@@ -7,12 +7,15 @@ import {
   Button,
   Keyboard,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
 import SubTitle from "../components/SubTitle";
 import CsBtn from "../components/CsBtn";
 import { colours as c } from "../constants/constants";
+import { userSignUp, selectAuth } from "../reducers/authSlice";
 
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -23,6 +26,9 @@ export default function SignUp({ navigation }) {
   const [errorMessages, setErrorMessages] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+
+  const dispatch = useDispatch();
+  const { user, loading, error } = useSelector(selectAuth);
 
   useEffect(() => {
     validatePasswords();
@@ -62,9 +68,12 @@ export default function SignUp({ navigation }) {
 
   const handleSignUp = () => {
     if (validateFields()) {
-      console.log("Sign Up pressed");
-      handleClear();
-      navigation.navigate("NextScreen");
+      const userData = {
+        name: `${firstName} ${lastName}`,
+        email,
+        password,
+      };
+      dispatch(userSignUp(userData));
     }
   };
 
@@ -156,6 +165,10 @@ export default function SignUp({ navigation }) {
                 ))}
               </View>
             )}
+            {loading && (
+              <ActivityIndicator size="large" color={c.primary} />
+            )}
+            {error && <Text style={styles.errorText}>Error: {error}</Text>}
           </View>
           <View style={styles.optionBx}>
             <CsBtn onPress={handleSignUp} color={c.cartBtn} title="Confirm" />
@@ -178,9 +191,9 @@ export default function SignUp({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  headingTxt:{
-    fontWeight:"bold",
-    fontSize:18,
+  headingTxt: {
+    fontWeight: "bold",
+    fontSize: 18,
   },
   heading: {
     justifyContent: "flex-start",
