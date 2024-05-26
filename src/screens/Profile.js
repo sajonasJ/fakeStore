@@ -6,29 +6,70 @@ import { colours as c } from "../constants/constants";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import CsBtn from "../components/CsBtn";
 import { updateProfile, signOut, selectAuth } from "../reducers/authSlice";
+import Toast from "react-native-toast-message";
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
-  const { user } = useSelector(selectAuth);
+  const { user, loading, error } = useSelector(selectAuth);
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");
-  const [newEmail, setNewEmail] = useState(user?.email || "");
+  const [newPassword, setNewPassword] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false); // Track update action
+  const [updateSuccess, setUpdateSuccess] = useState(false); // Track update success
 
   useEffect(() => {
     if (user) {
       setNewName(user.name || "");
-      setNewEmail(user.email || "");
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!loading && isUpdating) {
+      if (!error) {
+        setUpdateSuccess(true);
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: 'Profile Updated!',
+          text1Style: {
+            textAlign: 'center',
+            fontSize: 16,
+          },
+          text2: 'Your profile has been updated successfully.',
+          bottomOffset: 360,
+          visibilityTime: 3000,
+        });
+      } else {
+        setUpdateSuccess(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Update Failed',
+          text2: error,
+        });
+      }
+      setIsUpdating(false); // Reset update action flag
+    }
+  }, [loading, error, isUpdating]);
+
   const handleConfirm = () => {
-    dispatch(updateProfile({ name: newName, email: newEmail }));
+    if (newName.trim() === "" || newPassword.trim() === "") {
+      alert("Name and Password cannot be empty");
+      return;
+    }
+    setIsUpdating(true); // Set update action flag
+    dispatch(
+      updateProfile({
+        name: newName,
+        password: newPassword,
+        token: user.token,
+      })
+    );
     setModalVisible(false);
   };
 
   const handleCancel = () => {
     setNewName(user?.name || "");
-    setNewEmail(user?.email || "");
+    setNewPassword("");
     setModalVisible(false);
   };
 
@@ -36,7 +77,7 @@ export default function Profile({ navigation }) {
     dispatch(signOut());
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Category' }],
+      routes: [{ name: "Category" }],
     });
   };
 
@@ -68,11 +109,7 @@ export default function Profile({ navigation }) {
           color={c.cartBtn}
           title="Update"
         />
-        <CsBtn
-          onPress={handleSignOut}
-          color={c.backBtn}
-          title="Sign Out"
-        />
+        <CsBtn onPress={handleSignOut} color={c.backBtn} title="Sign Out" />
       </View>
       <Modal
         transparent={true}
@@ -97,14 +134,14 @@ export default function Profile({ navigation }) {
                 onChangeText={setNewName}
               />
               <View style={styles.tag}>
-                <Text style={styles.tagTxt}>Email:</Text>
+                <Text style={styles.tagTxt}>Password:</Text>
               </View>
               <TextInput
                 style={styles.input}
-                placeholder="Email"
-                value={newEmail}
-                onChangeText={setNewEmail}
-                keyboardType="email-address"
+                placeholder="Password"
+                value={newPassword}
+                onChangeText={setNewPassword}
+                secureTextEntry={true}
               />
               <View style={styles.modalButtonContainer}>
                 <CsBtn
@@ -122,9 +159,11 @@ export default function Profile({ navigation }) {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+      <Toast />
     </View>
   );
-} 
+}
+
 const styles = StyleSheet.create({
   tagTxt: {
     fontSize: 16,

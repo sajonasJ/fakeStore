@@ -77,3 +77,41 @@ export const signInUser = async (userData) => {
     throw error;
   }
 };
+
+export const updateUser = async (userData) => {
+  console.log("Sending update request with data:", userData);
+
+  try {
+    const response = await fetch(`${apiBaseURL}/users/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${userData.token}`, // Use the token from user data
+      },
+      body: JSON.stringify({
+        name: userData.name,
+        password: userData.password,
+      }),
+    });
+
+    console.log("Response status:", response.status);
+    console.log("Response headers:", response.headers);
+
+    const textResponse = await response.text();
+    console.log("Response body (text):", textResponse);
+
+    const data = JSON.parse(textResponse);
+    console.log("Parsed response body:", data);
+
+    if (data.status !== "OK") {
+      console.error("Error status received:", data.message);
+      throw new Error(data.message);
+    }
+
+    console.log("User updated successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+};

@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { increment } from "../reducers/counterSlice";
 import { fontSize as f, colours as c } from "../constants/constants";
 
+
 export default function ProductDetail({ route, navigation }) {
   const windowHeight = Dimensions.get("window").height;
   const item = route.params?.item;

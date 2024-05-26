@@ -6,6 +6,7 @@ import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
 import { selectAuth } from "../reducers/authSlice";
 
+
 const Stack = createStackNavigator();
 
 export default function AuthStack() {
