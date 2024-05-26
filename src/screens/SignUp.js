@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Header from "../components/Header";
+import SubTitle from "../components/SubTitle";
 import { colours as c } from "../constants/constants";
 
 export default function SignUp({ navigation }) {
@@ -79,6 +80,7 @@ export default function SignUp({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Header title="Sign Up" />
+        <SubTitle title="Sign Up a new user" />
         <View style={styles.formContainer}>
           <Text>First Name</Text>
           <TextInput
@@ -130,19 +132,19 @@ export default function SignUp({ navigation }) {
             </Text>
           </TouchableOpacity>
           <View style={styles.erBx}>
-          {passwordError ? (
-            <Text style={styles.errorText}>{passwordError}</Text>
-          ) : null}
-          {errorMessages.length > 0 && (
-            <View style={styles.errorContainer}>
-              {errorMessages.map((error, index) => (
-                <Text key={index} style={styles.errorText}>
-                  {error}
-                </Text>
-              ))}
-            </View>
-          )}
-             </View>
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+            {errorMessages.length > 0 && (
+              <View style={styles.errorContainer}>
+                {errorMessages.map((error, index) => (
+                  <Text key={index} style={styles.errorText}>
+                    {error}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
           <View style={styles.optionBx}>
             <TouchableOpacity style={styles.button} onPress={handleSignUp}>
               <Text style={styles.buttonText}>Sign Up</Text>
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: "80%",
     alignItems: "center",
-    marginTop: 55,
+    marginTop: 10,
   },
   input: {
     width: "100%",
