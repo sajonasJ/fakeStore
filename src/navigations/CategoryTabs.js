@@ -1,16 +1,18 @@
-// CategoryTabs.js
 import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ShoppingCart from "../screens/ShoppingCart";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import ProductStackScreen from './ProductStack'; // import the ProductStackScreen component
+import ProductStackScreen from "./ProductStack";
 import TabIcon from "../components/TabIcon";
 import Profile from "../screens/Profile";
 import Orders from "../screens/Orders";
+import { useSelector } from "react-redux";
+import { selectCount } from "../reducers/counterSlice";
 
 const Tabs = createBottomTabNavigator();
 
 export default function CategoryTabs() {
+  const count = useSelector(selectCount); // Get the count value from the Redux store
+
   return (
     <Tabs.Navigator>
       <Tabs.Screen
@@ -18,7 +20,7 @@ export default function CategoryTabs() {
         component={ProductStackScreen}
         options={{
           headerShown: false,
-            tabBarIcon: () => <TabIcon name="menu" color="#4cc9f0"/>,
+          tabBarIcon: () => <TabIcon name="menu" color="#4cc9f0" showBadge={false} />,
           tabBarLabel: () => (
             <Text
               style={{
@@ -37,7 +39,7 @@ export default function CategoryTabs() {
         component={ShoppingCart}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="cart" color="green"/>,
+          tabBarIcon: () => <TabIcon name="cart" color="green" showBadge={true} count={count} />,
           tabBarLabel: () => (
             <Text
               style={{
@@ -51,12 +53,12 @@ export default function CategoryTabs() {
           ),
         }}
       />
-            <Tabs.Screen
+      <Tabs.Screen
         name="My Orders"
         component={Orders}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="bag" color="red"/>,
+          tabBarIcon: () => <TabIcon name="bag" color="red" showBadge={false} />,
           tabBarLabel: () => (
             <Text
               style={{
@@ -70,12 +72,12 @@ export default function CategoryTabs() {
           ),
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="Profile"
         component={Profile}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="person-circle" color="blue"/>,
+          tabBarIcon: () => <TabIcon name="person-circle" color="blue" showBadge={false} />,
           tabBarLabel: () => (
             <Text
               style={{

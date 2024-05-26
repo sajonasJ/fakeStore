@@ -82,22 +82,29 @@ export default function SignUp({ navigation }) {
       <View style={styles.container}>
         <Header title="Sign Up" />
         <SubTitle title="Sign Up a new user" />
+
         <View style={styles.formContainer}>
-          <Text>First Name</Text>
+          <View style={styles.heading}>
+            <Text style={styles.headingTxt}>First Name</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Enter your first name"
             value={firstName}
             onChangeText={(text) => setFirstName(text)}
           />
-          <Text>Last Name</Text>
+          <View style={styles.heading}>
+            <Text style={styles.headingTxt}>Last Name</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Enter your last name"
             value={lastName}
             onChangeText={(text) => setLastName(text)}
           />
-          <Text>Email</Text>
+          <View style={styles.heading}>
+            <Text style={styles.headingTxt}>Email</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Enter your email"
@@ -105,7 +112,9 @@ export default function SignUp({ navigation }) {
             onChangeText={(text) => setEmail(text)}
             keyboardType="email-address"
           />
-          <Text>Password</Text>
+          <View style={styles.heading}>
+            <Text style={styles.headingTxt}>Password</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Enter your password"
@@ -116,7 +125,9 @@ export default function SignUp({ navigation }) {
             }}
             secureTextEntry={!showPassword}
           />
-          <Text>Confirm Password</Text>
+          <View style={styles.heading}>
+            <Text style={styles.headingTxt}>Confirm Password</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Confirm your password"
@@ -167,6 +178,14 @@ export default function SignUp({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  headingTxt:{
+    fontWeight:"bold",
+    fontSize:18,
+  },
+  heading: {
+    justifyContent: "flex-start",
+    width: "100%",
+  },
   erBx: {
     width: "100%",
     minHeight: 90,

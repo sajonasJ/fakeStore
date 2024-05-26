@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   optionBx: {
-    borderWidth: 1,
     width: "100%",
     padding: 15,
     justifyContent: "space-evenly",
@@ -173,7 +172,6 @@ const styles = StyleSheet.create({
   },
   detailTxt: {
     width: "100%",
-    // borderWidth:1,
     fontSize: 20,
     fontWeight: "bold",
     paddingBottom: 10,

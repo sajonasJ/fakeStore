@@ -11,6 +11,7 @@ export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateFields = () => {
     let errors = [];
@@ -46,7 +47,9 @@ export default function SignIn({ navigation }) {
         <Header title="Sign In" />
         <SubTitle title="Sign in with your email and password"></SubTitle>
         <View style={styles.formContainer}>
-          <Text>Email</Text>
+          <View style={styles.heading}>
+            <Text style={styles.headingTxt}>Email</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Enter your email"
@@ -54,14 +57,21 @@ export default function SignIn({ navigation }) {
             onChangeText={setEmail}
             keyboardType="email-address"
           />
-          <Text>Password</Text>
+          <View style={styles.heading}>
+            <Text style={styles.headingTxt}>Password</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Enter your password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={!showPassword}
           />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Text style={styles.showPasswordText}>
+              {showPassword ? "Hide Password" : "Show Password"}
+            </Text>
+          </TouchableOpacity>
           <View style={styles.erBx}>
             {errorMessages.length > 0 && (
               <View style={styles.errorContainer}>
@@ -94,6 +104,14 @@ export default function SignIn({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  headingTxt: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  heading: {
+    justifyContent: "flex-start",
+    width: "100%",
+  },
   erBx: {
     width: "100%",
     minHeight: 70,
@@ -151,5 +169,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
+  },
+  showPasswordText: {
+    textDecorationLine: "underline",
+    color: "blue",
+    marginBottom: 15,
   },
 });

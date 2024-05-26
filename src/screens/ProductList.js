@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   imageContainer: {
-    borderWidth: 1,
     aspectRatio: 1,
     width: "25%",
   },
