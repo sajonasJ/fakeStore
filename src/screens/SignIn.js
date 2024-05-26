@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text, Button, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, TextInput, Button, Keyboard, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
 import SubTitle from "../components/SubTitle";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { colours as c } from "../constants/constants";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import CsBtn from "../components/CsBtn";
+import { colours as c } from "../constants/constants";
+import { userSignIn, selectAuth } from "../reducers/authSlice";
 
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
@@ -13,15 +14,25 @@ export default function SignIn({ navigation }) {
   const [errorMessages, setErrorMessages] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
 
+  const dispatch = useDispatch();
+  const { user, loading, error } = useSelector(selectAuth);
+
+  useEffect(() => {
+    if (user) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Category" }],
+      });
+    }
+  }, [user]);
+
   const validateFields = () => {
     let errors = [];
 
-    !email || !password ? errors.push("All fields are required.") : null;
+    if (!email || !password) errors.push("All fields are required.");
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    !emailRegex.test(email)
-      ? errors.push("Email must contain '@' and '.com'.")
-      : null;
+    if (!emailRegex.test(email)) errors.push("Email must contain '@' and '.com'.");
 
     setErrorMessages(errors);
 
@@ -30,8 +41,7 @@ export default function SignIn({ navigation }) {
 
   const handleSignIn = () => {
     if (validateFields()) {
-      console.log("Sign In pressed");
-      // Handle sign in logic
+      dispatch(userSignIn({ email, password }));
     }
   };
 
@@ -45,7 +55,7 @@ export default function SignIn({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Header title="Sign In" />
-        <SubTitle title="Sign in with your email and password"></SubTitle>
+        <SubTitle title="Sign in with your email and password" />
         <View style={styles.formContainer}>
           <View style={styles.heading}>
             <Text style={styles.headingTxt}>Email</Text>
@@ -82,6 +92,8 @@ export default function SignIn({ navigation }) {
                 ))}
               </View>
             )}
+            {loading && <ActivityIndicator size="large" color={c.primary} />}
+            {error && <Text style={styles.errorText}>Error: {error}</Text>}
           </View>
           <View style={styles.optionBx}>
             <CsBtn onPress={handleSignIn} color={c.cartBtn} title="Confirm" />

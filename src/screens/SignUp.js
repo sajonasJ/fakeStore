@@ -45,21 +45,32 @@ export default function SignUp({ navigation }) {
   const validateFields = () => {
     let errors = [];
 
-    !firstName || !lastName || !email || !password || !confirmPassword
-      ? errors.push("All fields are required.")
-      : null;
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      errors.push("All fields are required.");
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    !emailRegex.test(email)
-      ? errors.push("Email must contain '@' and '.com'.")
-      : null;
+    if (!emailRegex.test(email)) {
+      errors.push("Email must contain '@' and '.com'.");
+    }
 
     const nameRegex = /^[a-zA-Z]+$/;
-    !nameRegex.test(firstName) || !nameRegex.test(lastName)
-      ? errors.push("Names cannot contain numbers or special characters.")
-      : null;
+    if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+      errors.push("Names cannot contain numbers or special characters.");
+    }
 
-    passwordError ? errors.push(passwordError) : null;
+    if (password.length < 8) {
+      errors.push("Password must be at least 8 characters long.");
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+    if (!passwordRegex.test(password)) {
+      errors.push("Password must contain at least one uppercase letter, one lowercase letter, and one digit.");
+    }
+
+    if (passwordError) {
+      errors.push(passwordError);
+    }
 
     setErrorMessages(errors);
 
@@ -76,6 +87,13 @@ export default function SignUp({ navigation }) {
       dispatch(userSignUp(userData));
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      handleClear();
+      navigation.navigate("Profile"); // Adjust this as needed
+    }
+  }, [user, navigation]);
 
   const handleClear = () => {
     setFirstName("");
@@ -165,9 +183,7 @@ export default function SignUp({ navigation }) {
                 ))}
               </View>
             )}
-            {loading && (
-              <ActivityIndicator size="large" color={c.primary} />
-            )}
+            {loading && <ActivityIndicator size="large" color={c.primary} />}
             {error && <Text style={styles.errorText}>Error: {error}</Text>}
           </View>
           <View style={styles.optionBx}>

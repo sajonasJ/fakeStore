@@ -1,33 +1,46 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text, Button, Modal, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, Modal, TextInput } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
 import { colours as c } from "../constants/constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import CsBtn from "../components/CsBtn";
+import { updateProfile, signOut, selectAuth } from "../reducers/authSlice";
 
 export default function Profile({ navigation }) {
+  const dispatch = useDispatch();
+  const { user } = useSelector(selectAuth);
   const [modalVisible, setModalVisible] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [newFirstName, setNewFirstName] = useState(firstName);
-  const [newLastName, setNewLastName] = useState(lastName);
-  const [newEmail, setNewEmail] = useState(email);
+  const [newFirstName, setNewFirstName] = useState(user?.firstName || "");
+  const [newLastName, setNewLastName] = useState(user?.lastName || "");
+  const [newEmail, setNewEmail] = useState(user?.email || "");
+
+  useEffect(() => {
+    if (user) {
+      setNewFirstName(user.firstName || "");
+      setNewLastName(user.lastName || "");
+      setNewEmail(user.email || "");
+    }
+  }, [user]);
 
   const handleConfirm = () => {
-    setFirstName(newFirstName);
-    setLastName(newLastName);
-    setEmail(newEmail);
+    dispatch(updateProfile({ firstName: newFirstName, lastName: newLastName, email: newEmail }));
     setModalVisible(false);
-    console.log("confirmed");
   };
 
   const handleCancel = () => {
-    setNewFirstName(firstName);
-    setNewLastName(lastName);
-    setNewEmail(email);
+    setNewFirstName(user?.firstName || "");
+    setNewLastName(user?.lastName || "");
+    setNewEmail(user?.email || "");
     setModalVisible(false);
+  };
+
+  const handleSignOut = () => {
+    dispatch(signOut());
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Category' }],
+    });
   };
 
   return (
@@ -39,7 +52,7 @@ export default function Profile({ navigation }) {
             <Text style={styles.detailTxt}>Name:</Text>
           </View>
           <View style={styles.detailBx2}>
-            <Text style={styles.detailTxt2}>{`${firstName} ${lastName}`}</Text>
+            <Text style={styles.detailTxt2}>{`${user?.firstName || ""} ${user?.lastName || ""}`}</Text>
           </View>
         </View>
 
@@ -48,7 +61,7 @@ export default function Profile({ navigation }) {
             <Text style={styles.detailTxt}>Email:</Text>
           </View>
           <View style={styles.detailBx2}>
-            <Text style={styles.detailTxt2}>{email}</Text>
+            <Text style={styles.detailTxt2}>{user?.email || ""}</Text>
           </View>
         </View>
       </View>
@@ -58,11 +71,8 @@ export default function Profile({ navigation }) {
           color={c.cartBtn}
           title="Update"
         />
-
         <CsBtn
-          onPress={() => {
-            console.log("pressed logout");
-          }}
+          onPress={handleSignOut}
           color={c.backBtn}
           title="Sign Out"
         />
@@ -114,7 +124,6 @@ export default function Profile({ navigation }) {
                   color={c.cartBtn}
                   title="Confirm"
                 />
-
                 <CsBtn
                   onPress={handleCancel}
                   color={c.backBtn}
@@ -136,13 +145,11 @@ const styles = StyleSheet.create({
   },
   tag: {
     width: "100%",
-    // padding:10,
     paddingBottom: 5,
     paddingLeft: 10,
     paddingTop: 10,
   },
   dBx: {
-    // borderWidth: 1,
     backgroundColor: "#f0efeb",
   },
   infoBx: {
@@ -206,7 +213,6 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 20,
     backgroundColor: "#e9ecef",
-
     borderRadius: 10,
     alignItems: "center",
   },
