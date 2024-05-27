@@ -14,19 +14,9 @@ export const signUpUser = async (userData) => {
       body: JSON.stringify(userData),
     });
 
-    const textResponse = await response.text();
-    console.log("Response status:", response.status);
-    console.log("Response headers:", response.headers);
-    console.log("Response body (text):", textResponse);
-
     if (!response.ok) {
       console.error("Server responded with error status");
       throw new Error(textResponse || "Network response was not ok");
-    }
-
-    if (textResponse.startsWith('<')) {
-      console.error("Unexpected HTML response: ", textResponse);
-      throw new Error("Unexpected HTML response from server");
     }
 
     const data = JSON.parse(textResponse);
@@ -52,34 +42,28 @@ export const signInUser = async (userData) => {
     });
 
     const textResponse = await response.text();
-    console.log("Response status:", response.status);
-    console.log("Response headers:", response.headers);
-    console.log("Response body (text):", textResponse);
+    // console.log("Response status:", response.status);
+    // console.log("Response headers:", response.headers);
 
     if (!response.ok) {
-      console.error("Server responded with error status");
+      // console.error("Server responded with error status");
       throw new Error(textResponse || "Network response was not ok");
     }
 
-    if (textResponse.startsWith('<')) {
-      console.error("Unexpected HTML response: ", textResponse);
-      throw new Error("Unexpected HTML response from server");
-    }
-
     const data = JSON.parse(textResponse);
-    console.log("User signed in successfully:", data);
+    // console.log("User signed in successfully:", data);
     if (data.status === "error") {
       throw new Error(data.message);
     }
     return data;
   } catch (error) {
-    console.error("Error signing in:", error);
+    // console.error("Error signing in:", error);
     throw error;
   }
 };
 
 export const updateUser = async (userData) => {
-  console.log("Sending update request with data:", userData);
+  // console.log("Sending update request with data:", userData);
 
   try {
     const response = await fetch(`${apiBaseURL}/users/update`, {
@@ -112,6 +96,103 @@ export const updateUser = async (userData) => {
     return data;
   } catch (error) {
     console.error("Error updating user:", error);
+    throw error;
+  }
+};
+
+// Other existing functions...
+
+// Create Order
+export const createOrder = async (orderData) => {
+  try {
+    console.log("Creating order with data:", orderData);
+
+    const response = await fetch(`${apiBaseURL}/orders/neworder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${orderData.token}`, // Assuming token is passed in orderData
+      },
+      body: JSON.stringify({ items: orderData.items }),
+    });
+
+    console.log("Response status:", response.status);
+    console.log("Response headers:", response.headers);
+
+    const textResponse = await response.text();
+    console.log("Response body (text):", textResponse);
+
+    const data = JSON.parse(textResponse);
+    console.log("Parsed response body:", data);
+
+    if (data.status !== "OK") {
+      console.error("Error status received:", data.message);
+      throw new Error(data.message);
+    }
+
+    console.log("Order created successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error creating order:", error);
+    throw error;
+  }
+};
+
+export const getAllOrders = async (token) => {
+  try {
+    console.log("Fetching all orders");
+
+    const response = await fetch(`${apiBaseURL}/orders/all`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    const textResponse = await response.text();
+    const data = JSON.parse(textResponse);
+
+    if (data.status !== "OK") {
+      console.error("Error status received:", data.message);
+      throw new Error(data.message);
+    }
+
+    console.log("Orders fetched successfully:", data.orders);
+    return data.orders;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+};
+
+
+export const updateOrderStatus = async (orderData) => {
+  try {
+    console.log("Updating order status with data:", orderData);
+
+    const response = await fetch(`${apiBaseURL}/orders/updateorder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${orderData.token}`,
+      },
+      body: JSON.stringify({
+        orderID: orderData.orderID,
+        isPaid: orderData.isPaid,
+        isDelivered: orderData.isDelivered,
+      }),
+    });
+
+    const data = await response.json();
+    console.log("Order status update response:", data);
+
+    if (data.status !== "OK") {
+      throw new Error(data.message);
+    }
+    return data;
+  } catch (error) {
+    console.error("Error updating order status:", error);
     throw error;
   }
 };

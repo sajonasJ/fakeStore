@@ -24,10 +24,14 @@ export const counterSlice = createSlice({
         state.value -= 1;
       }
     },
+    resetCart: (state) => {
+      state.cart = [];
+      state.value = 0;
+    },
   },
 });
 
-export const { increment, decrement } = counterSlice.actions;
+export const { increment, decrement, resetCart } = counterSlice.actions;
 export const selectCount = (state) => state.counter.value;
 export const selectCart = (state) => state.counter.cart;
 export default counterSlice.reducer;

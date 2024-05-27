@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import SubTitle from "../components/SubTitle";
 import CsBtn from "../components/CsBtn";
 import { colours as c } from "../constants/constants";
-import { userSignIn, selectAuth } from "../reducers/authSlice";
+import { userSignIn, selectAuth,fetchAllOrders } from "../reducers/authSlice";
 
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
@@ -21,8 +21,9 @@ export default function SignIn({ navigation }) {
     if (user && !error) {
       handleClear();
       navigation.navigate("Profile");
+      dispatch(fetchAllOrders(user.token));
     }
-  }, [user, error, navigation]);
+  }, [user, error, navigation, dispatch]);
 
   const validateFields = () => {
     let errors = [];
@@ -112,6 +113,9 @@ export default function SignIn({ navigation }) {
     </TouchableWithoutFeedback>
   );
 }
+
+
+
 const styles = StyleSheet.create({
   headingTxt: {
     fontWeight: "bold",

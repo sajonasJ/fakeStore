@@ -5,6 +5,7 @@ import {
   selectCount,
   increment,
   decrement,
+  resetCart,
 } from "../reducers/counterSlice";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
@@ -14,26 +15,38 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import Header from "../components/Header";
 import { fontSize as f, colours as c } from "../constants/constants";
-
+import CsBtn from "../components/CsBtn";
+import {
+  createNewOrder,
+  selectAuth,
+  fetchAllOrders,
+} from "../reducers/authSlice";
+import CustomAlert from "../components/CustomAlert";
 
 export default function ShoppingCart({ navigation }) {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const itemCount = useSelector(selectCount);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [uniqueCart, setUniqueCart] = useState([]);
+  const { user } = useSelector(selectAuth);
+  const windowHeight = Dimensions.get("window").height;
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.count,
     0
   );
- // State to hold unique items with their count
-  const [uniqueCart, setUniqueCart] = useState([]);
 
   useEffect(() => {
     const updatedUniqueCart = cart.reduce((acc, current) => {
       if (current.count > 0) {
-        const existingItemIndex = acc.findIndex((item) => item.id === current.id);
+        const existingItemIndex = acc.findIndex(
+          (item) => item.id === current.id
+        );
         if (existingItemIndex !== -1) {
           acc[existingItemIndex].count = current.count;
         } else {
@@ -52,6 +65,40 @@ export default function ShoppingCart({ navigation }) {
 
   const handleRemove = (product) => {
     dispatch(decrement(product));
+  };
+
+  const handleCart = () => {
+    if (uniqueCart.length > 0 && user) {
+      const orderData = {
+        token: user.token, // Assuming the token is stored in the user object
+        items: uniqueCart.map((item) => ({
+          prodID: item.id,
+          price: item.price,
+          quantity: item.count,
+        })),
+      };
+
+      dispatch(createNewOrder(orderData))
+        .unwrap()
+        .then((response) => {
+          console.log("Order response:", response);
+          if (response.status === "OK") {
+            dispatch(fetchAllOrders(user.token));
+            dispatch(resetCart());
+            setAlertMessage("Added a New Order!");
+            setAlertVisible(true);
+          } else {
+            alert(response.message);
+          }
+        })
+        .catch((error) => {
+          // Handle error
+          console.error("Order creation error:", error);
+          alert(error.message);
+        });
+    } else {
+      alert("Your cart is empty or you are not logged in.");
+    }
   };
 
   return (
@@ -83,9 +130,9 @@ export default function ShoppingCart({ navigation }) {
 
                     <View style={styles.opt}>
                       <View style={styles.textsBx}>
-                        <Text style={styles.catListPrice}>{`Price: $${
-                          item.price
-                        }`}</Text>
+                        <Text
+                          style={styles.catListPrice}
+                        >{`Price: $${item.price}`}</Text>
                         <Text>Count: {item.count}</Text>
                       </View>
                       <View style={styles.btnIcons}>
@@ -110,31 +157,52 @@ export default function ShoppingCart({ navigation }) {
           />
         </View>
       )}
+
       {uniqueCart.length > 0 && (
-        <View style={styles.totals}>
-          <View style={styles.totalItems}>
-            <View style={styles.totalTitle}>
-              <Text style={styles.totalsTitleTxt}>Total Items:</Text>
+        <>
+          <View style={styles.totals}>
+            <View style={styles.totalItems}>
+              <View style={styles.totalTitle}>
+                <Text style={styles.totalsTitleTxt}>Total Items:</Text>
+              </View>
+              <View style={styles.totalRes}>
+                <Text style={styles.totalsTxt}>{itemCount}</Text>
+              </View>
             </View>
-            <View style={styles.totalRes}>
-              <Text style={styles.totalsTxt}>{itemCount}</Text>
+            <View style={styles.totalPrice}>
+              <View style={styles.totalTitle}>
+                <Text style={styles.totalsTitleTxt}>Total Price: </Text>
+              </View>
+              <View style={styles.totalRes}>
+                <Text style={styles.totalsTxt}>${totalPrice.toFixed(2)}</Text>
+              </View>
             </View>
           </View>
-          <View style={styles.totalPrice}>
-            <View style={styles.totalTitle}>
-              <Text style={styles.totalsTitleTxt}>Total Price: </Text>
-            </View>
-            <View style={styles.totalRes}>
-              <Text style={styles.totalsTxt}>${totalPrice.toFixed(2)}</Text>
-            </View>
+          <View style={styles.bottom}>
+            <CsBtn onPress={handleCart} color={c.backBtn} title="Check Out" />
           </View>
-        </View>
+        </>
       )}
+            <CustomAlert
+        visible={alertVisible}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
     </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
+  bottom: {
+    width: "100%",
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    borderWidth: 1,
+    marginBottom: 40,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
   emptyCartText: {
     fontSize: f.large,
     textAlign: "center",
@@ -212,7 +280,7 @@ const styles = StyleSheet.create({
     backgroundColor: c.bkgcol,
     justifyContent: "flex-start",
     width: "100%",
-    height: "80%",
+    height: "76%",
   },
   catListBox: {
     width: "100%",

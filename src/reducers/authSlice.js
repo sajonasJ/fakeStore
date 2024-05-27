@@ -1,8 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { signUpUser, signInUser, updateUser } from "../service/authService";
+import {
+  updateOrderStatus,
+  createOrder,
+  signUpUser,
+  signInUser,
+  updateUser,
+  getAllOrders,
+} from "../service/authService";
 
 const initialState = {
   user: null,
+  orders: [],
   loading: false,
   error: null,
   isAuthenticated: false,
@@ -46,6 +54,51 @@ export const updateProfile = createAsyncThunk(
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const createNewOrder = createAsyncThunk(
+  "orders/createNewOrder",
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await createOrder(orderData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAllOrders = createAsyncThunk(
+  "orders/fetchAllOrders",
+  async (token, { rejectWithValue }) => {
+    try {
+      const orders = await getAllOrders(token);
+      return orders;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateOrder = createAsyncThunk(
+  "orders/updateOrder",
+  async (orderData, { getState, rejectWithValue }) => {
+    const { auth } = getState();
+    const { user } = auth;
+    if (!user || !user.token) {
+      return rejectWithValue("User not authenticated");
+    }
+
+    try {
+      const response = await updateOrderStatus({
+        ...orderData,
+        token: user.token,
+      });
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -101,10 +154,47 @@ const authSlice = createSlice({
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(createNewOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createNewOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        // Handle successful order creation if needed
+      })
+      .addCase(createNewOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchAllOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orders = action.payload;
+      })
+      .addCase(fetchAllOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        // Handle successful order update if needed
+      })
+      .addCase(updateOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
 export const { signOut, updateProfileState } = authSlice.actions;
 export const selectAuth = (state) => state.auth;
+export const selectOrders = (state) => state.auth.orders;
 export default authSlice.reducer;
