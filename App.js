@@ -18,7 +18,7 @@ export default function App() {
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="Category"
+              initialRouteName="Splash"
               screenOptions={{
                 headerStyle: {
                   backgroundColor: c.bkgcol,
