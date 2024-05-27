@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectCart,
-  selectCount,
-  increment,
-  decrement,
-  resetCart,
-} from "../reducers/counterSlice";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   View,
@@ -15,63 +8,46 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  Dimensions,
+  Alert,
 } from "react-native";
 import Header from "../components/Header";
 import { fontSize as f, colours as c } from "../constants/constants";
 import CsBtn from "../components/CsBtn";
-import {
-  createNewOrder,
-  selectAuth,
-  fetchAllOrders,
-} from "../reducers/authSlice";
-import CustomAlert from "../components/CustomAlert";
+import { createNewOrder, selectAuth, fetchAllOrders } from "../reducers/authSlice";
+import { increment, decrement, resetCart, selectCart, updateCart, fetchCartItems } from "../reducers/counterSlice";
+
 
 export default function ShoppingCart({ navigation }) {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
-  const itemCount = useSelector(selectCount);
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [uniqueCart, setUniqueCart] = useState([]);
+  const itemCount = cart.reduce((total, item) => total + item.count, 0);
   const { user } = useSelector(selectAuth);
-  const windowHeight = Dimensions.get("window").height;
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.count,
     0
   );
 
   useEffect(() => {
-    const updatedUniqueCart = cart.reduce((acc, current) => {
-      if (current.count > 0) {
-        const existingItemIndex = acc.findIndex(
-          (item) => item.id === current.id
-        );
-        if (existingItemIndex !== -1) {
-          acc[existingItemIndex].count = current.count;
-        } else {
-          acc.push({ ...current });
-        }
-      }
-      return acc;
-    }, []);
-
-    setUniqueCart(updatedUniqueCart);
-  }, [cart]);
+    if (user) {
+      dispatch(updateCart({ token: user.token, items: cart }));
+    }
+  }, [cart, user, dispatch]);
 
   const handleAdd = (product) => {
     dispatch(increment(product));
+    dispatch(updateCart({ token: user.token, items: cart }));
   };
 
   const handleRemove = (product) => {
     dispatch(decrement(product));
+    dispatch(updateCart({ token: user.token, items: cart }));
   };
 
   const handleCart = () => {
-    if (uniqueCart.length > 0 && user) {
+    if (cart.length > 0 && user) {
       const orderData = {
-        token: user.token, // Assuming the token is stored in the user object
-        items: uniqueCart.map((item) => ({
+        token: user.token,
+        items: cart.map(item => ({
           prodID: item.id,
           price: item.price,
           quantity: item.count,
@@ -85,9 +61,9 @@ export default function ShoppingCart({ navigation }) {
           if (response.status === "OK") {
             dispatch(fetchAllOrders(user.token));
             dispatch(resetCart());
-            setAlertMessage("Added a New Order!");
-            setAlertVisible(true);
+            Alert.alert("Success", "Added a New Order!");
           } else {
+            // Handle error response
             alert(response.message);
           }
         })
@@ -104,12 +80,12 @@ export default function ShoppingCart({ navigation }) {
   return (
     <View style={styles.container}>
       <Header title="Shopping Cart" />
-      {uniqueCart.length === 0 ? (
+      {cart.length === 0 ? (
         <Text style={styles.emptyCartText}>Shopping Cart is empty</Text>
       ) : (
         <View style={styles.catList}>
           <FlatList
-            data={uniqueCart.filter((item) => item.count > 0)}
+            data={cart.filter((item) => item.count > 0)}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
@@ -158,7 +134,7 @@ export default function ShoppingCart({ navigation }) {
         </View>
       )}
 
-      {uniqueCart.length > 0 && (
+      {cart.length > 0 && (
         <>
           <View style={styles.totals}>
             <View style={styles.totalItems}>
@@ -179,17 +155,15 @@ export default function ShoppingCart({ navigation }) {
             </View>
           </View>
           <View style={styles.bottom}>
-            <CsBtn onPress={handleCart} color={c.backBtn} title="Check Out" />
+            <CsBtn
+              onPress={handleCart}
+              color={c.backBtn}
+              title="Check Out"
+            />
           </View>
         </>
       )}
-            <CustomAlert
-        visible={alertVisible}
-        message={alertMessage}
-        onClose={() => setAlertVisible(false)}
-      />
     </View>
-    
   );
 }
 

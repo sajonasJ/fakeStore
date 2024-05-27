@@ -1,6 +1,15 @@
 const server = "172.16.11.240";
 const apiBaseURL = `http://${server}:3000`;
 
+function parseJSON(response) {
+  try {
+    return JSON.parse(response);
+  } catch (e) {
+    console.error('Failed to parse response:', response);
+    throw new Error('Invalid server response');
+  }
+}
+
 // Sign-Up User
 export const signUpUser = async (userData) => {
   try {
@@ -13,6 +22,8 @@ export const signUpUser = async (userData) => {
       },
       body: JSON.stringify(userData),
     });
+
+    const textResponse = await response.text();
 
     if (!response.ok) {
       console.error("Server responded with error status");
@@ -100,9 +111,7 @@ export const updateUser = async (userData) => {
   }
 };
 
-// Other existing functions...
 
-// Create Order
 export const createOrder = async (orderData) => {
   try {
     console.log("Creating order with data:", orderData);
@@ -111,7 +120,7 @@ export const createOrder = async (orderData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${orderData.token}`, // Assuming token is passed in orderData
+        "Authorization": `Bearer ${orderData.token}`,
       },
       body: JSON.stringify({ items: orderData.items }),
     });
@@ -158,7 +167,6 @@ export const getAllOrders = async (token) => {
       throw new Error(data.message);
     }
 
-    console.log("Orders fetched successfully:", data.orders);
     return data.orders;
   } catch (error) {
     console.error("Error fetching orders:", error);
@@ -193,6 +201,63 @@ export const updateOrderStatus = async (orderData) => {
     return data;
   } catch (error) {
     console.error("Error updating order status:", error);
+    throw error;
+  }
+};
+
+export const addCart = async (cartData) => {
+  try {
+    console.log("Adding/updating cart with data:", cartData);
+
+    const response = await fetch(`${apiBaseURL}/cart`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${cartData.token}`, // Assuming token is passed in cartData
+      },
+      body: JSON.stringify({ items: cartData.items }),
+    });
+
+    const textResponse = await response.text();
+    const data = JSON.parse(textResponse);
+
+    if (data.status !== "OK") {
+      console.error("Error status received:", data.message);
+      throw new Error(data.message);
+    }
+
+    console.log("Cart updated successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error updating cart:", error);
+    throw error;
+  }
+};
+
+export const getCart = async (token) => {
+  try {
+    console.log("Fetching cart items");
+
+    const response = await fetch(`${apiBaseURL}/cart`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    const textResponse = await response.text();
+    const data = JSON.parse(textResponse);
+
+    if (data.status !== "OK") {
+      console.error("Error status received:", data.message);
+      throw new Error(data.message);
+    }
+
+    console.log("Cart items fetched successfully:", data.items);
+    return data.items;
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
     throw error;
   }
 };

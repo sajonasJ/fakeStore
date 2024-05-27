@@ -7,7 +7,7 @@ import rootReducer from "../reducers/rootReducer"; // Combined reducers
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['products'], // Only persist the products slice
+    whitelist: ['products', 'counter'], // Only persist the products slice
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

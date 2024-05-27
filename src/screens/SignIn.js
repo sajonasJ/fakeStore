@@ -21,9 +21,8 @@ export default function SignIn({ navigation }) {
     if (user && !error) {
       handleClear();
       navigation.navigate("Profile");
-      dispatch(fetchAllOrders(user.token));
     }
-  }, [user, error, navigation, dispatch]);
+  }, [user, error, navigation]);
 
   const validateFields = () => {
     let errors = [];

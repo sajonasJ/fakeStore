@@ -9,22 +9,21 @@ import Orders from "../screens/Orders";
 import AuthStack from "./AuthStack";
 import Profile from "../screens/Profile";
 import { selectCount } from "../reducers/counterSlice";
-import { selectAuth } from "../reducers/authSlice";
+import { selectAuth, selectNewOrdersCount } from "../reducers/authSlice";
 
 const Tabs = createBottomTabNavigator();
 
 export default function CategoryTabs() {
   const count = useSelector(selectCount);
   const { isAuthenticated } = useSelector(selectAuth);
+  const newOrdersCount = useSelector(selectNewOrdersCount);
 
   const handleTabPress = (navigation, screenName) => {
     if (!isAuthenticated) {
       Alert.alert(
         "Access Restricted",
         "You need to sign in or sign up to access this screen.",
-        [
-          { text: "Okay" },,
-        ]
+        [{ text: "Okay" }]
       );
     } else {
       navigation.navigate(screenName);
@@ -44,7 +43,10 @@ export default function CategoryTabs() {
         })}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="menu" color="rgba(0, 0, 0, 0.7)" showBadge={false} />,
+          tabBarIcon: () => 
+          <TabIcon name="menu" 
+          color="rgba(0, 0, 0, 0.7)"
+           showBadge={false} />,
           tabBarLabel: () => (
             <Text
               style={{
@@ -69,7 +71,8 @@ export default function CategoryTabs() {
         })}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="cart" color="rgba(0, 128, 0, .7)" showBadge={true} count={count} />,
+            tabBarIcon: () => <TabIcon name="cart" color="rgba(0, 128, 0, .7)" showBadge={isAuthenticated} count={count} />,
+
           tabBarLabel: () => (
             <Text
               style={{
@@ -94,7 +97,8 @@ export default function CategoryTabs() {
         })}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="bag" color="rgba(255, 0, 0, 0.7)" showBadge={false} />,
+          tabBarIcon: () => <TabIcon name="bag" color="rgba(255, 0, 0, 0.7)" showBadge={isAuthenticated && newOrdersCount > 0} count={newOrdersCount} />,
+
           tabBarLabel: () => (
             <Text
               style={{
@@ -114,7 +118,11 @@ export default function CategoryTabs() {
           component={Profile}
           options={{
             headerShown: false,
-            tabBarIcon: () => <TabIcon name="person-circle" color="rgba(0, 0, 255, 0.7)" showBadge={false} />,
+            tabBarIcon: () =>
+               <TabIcon 
+            name="person-circle" 
+            color="rgba(0, 0, 255, 0.7)" 
+            showBadge={false} />,
             tabBarLabel: () => (
               <Text
                 style={{

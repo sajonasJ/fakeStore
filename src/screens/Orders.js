@@ -25,13 +25,7 @@ export default function Orders({ navigation }) {
   const [showDeliveredOrders, setShowDeliveredOrders] = useState(false);
   const dispatch = useDispatch();
   const newOrders = useSelector(selectOrders);
-  const { user } = useSelector(selectAuth);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchAllOrders(user.token));
-    }
-  }, [user, dispatch]);
+  // const { user } = useSelector(selectAuth);
 
   const [orders, setOrders] = useState({
     newOrders: [],

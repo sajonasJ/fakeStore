@@ -5,26 +5,28 @@ import {
   Text,
   StyleSheet,
   Image,
-  Dimensions,
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import Toast from "react-native-toast-message";
 import { Rating } from "react-native-ratings";
 import CsBtn from "../components/CsBtn";
 import Header from "../components/Header";
-import { useDispatch } from "react-redux";
-import { increment } from "../reducers/counterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { increment, selectCart,updateCart } from "../reducers/counterSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fontSize as f, colours as c } from "../constants/constants";
-
+import CustomAlert from "../components/CustomAlert";
+import { selectAuth } from "../reducers/authSlice";
 
 export default function ProductDetail({ route, navigation }) {
   const dispatch = useDispatch();
-  const windowHeight = Dimensions.get("window").height;
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const routeItem = route.params?.item;
   const [item, setItem] = useState(routeItem || {});
   const { id, title, rating, price, description, image } = item;
+  const { user } = useSelector(selectAuth);
+  const cart = useSelector(selectCart);
   const [isLoading, setIsLoading] = useState(true);
   const [isCacheWorking, setIsCacheWorking] = useState(false);
 
@@ -73,19 +75,16 @@ export default function ProductDetail({ route, navigation }) {
     const product = { id, title, rating, price, description, image };
     dispatch(increment(product));
 
-    Toast.show({
-      type: "success",
-      position: "bottom",
-      text1: "Added to Cart!",
-      text1Style: {
-        textAlign: "center",
-        fontSize: f.large,
-      },
-      swipeable: true,
-      bottomOffset: windowHeight / 3,
-      visibilityTime: 1000,
-      props: { style: { zIndex: 19999 } },
-    });
+    // Update backend cart
+    const updatedCart = [
+      ...cart.filter(item => item.id !== product.id),
+      { ...product, count: (cart.find(item => item.id === product.id)?.count || 0) + 1 }
+    ];
+
+    dispatch(updateCart({ token: user.token, items: updatedCart }));
+
+    setAlertMessage("Added to Cart!");
+    setAlertVisible(true);
   };
 
   return (
@@ -155,6 +154,11 @@ export default function ProductDetail({ route, navigation }) {
           </>
         )}
       </View>
+      <CustomAlert
+        visible={alertVisible}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
     </View>
   );
 }

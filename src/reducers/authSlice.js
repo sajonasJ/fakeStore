@@ -7,7 +7,7 @@ import {
   updateUser,
   getAllOrders,
 } from "../service/authService";
-
+import { fetchCartItems } from "./counterSlice";
 const initialState = {
   user: null,
   orders: [],
@@ -36,6 +36,8 @@ export const userSignIn = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await signInUser(userData);
+      thunkAPI.dispatch(fetchCartItems(response.token));
+      thunkAPI.dispatch(fetchAllOrders(response.token)); 
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -114,6 +116,9 @@ const authSlice = createSlice({
     updateProfileState: (state, action) => {
       state.user = { ...state.user, ...action.payload };
     },
+    resetCart: (state) => {
+      state.cart = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -161,7 +166,7 @@ const authSlice = createSlice({
       })
       .addCase(createNewOrder.fulfilled, (state, action) => {
         state.loading = false;
-        // Handle successful order creation if needed
+        state.orders.push(action.payload); // Add the new order to the orders state
       })
       .addCase(createNewOrder.rejected, (state, action) => {
         state.loading = false;
@@ -185,7 +190,10 @@ const authSlice = createSlice({
       })
       .addCase(updateOrder.fulfilled, (state, action) => {
         state.loading = false;
-        // Handle successful order update if needed
+        const index = state.orders.findIndex(order => order.id === action.payload.id);
+        if (index !== -1) {
+          state.orders[index] = action.payload;
+        }
       })
       .addCase(updateOrder.rejected, (state, action) => {
         state.loading = false;
@@ -194,7 +202,8 @@ const authSlice = createSlice({
   },
 });
 
-export const { signOut, updateProfileState } = authSlice.actions;
+export const { signOut, updateProfileState, resetCart } = authSlice.actions;
+export const selectNewOrdersCount = (state) => state.auth.orders.filter(order => order.is_paid === 0).length;
 export const selectAuth = (state) => state.auth;
 export const selectOrders = (state) => state.auth.orders;
 export default authSlice.reducer;
