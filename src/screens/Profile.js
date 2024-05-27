@@ -25,7 +25,7 @@ export default function Profile({ navigation }) {
     }
   }, [user]);
 
-  // Temporary Code to show persistence of data
+  //! Temporary Code to show caching
   // useEffect(() => {
   //   const checkStorage = async () => {
   //     try {

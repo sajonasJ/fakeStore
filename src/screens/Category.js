@@ -51,7 +51,7 @@ export default function Category({ navigation }) {
     });
   };
 
-    // TEMPORARY useEffect to check persisted state
+    //! TEMPORARY useEffect to check persisted state
     // useEffect(() => {
     //   console.log("Checking persisted state...");
     //   // Assuming you have configured redux-persist correctly

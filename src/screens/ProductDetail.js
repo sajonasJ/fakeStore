@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StatusBar,
   View,
@@ -15,15 +15,55 @@ import CsBtn from "../components/CsBtn";
 import Header from "../components/Header";
 import { useDispatch } from "react-redux";
 import { increment } from "../reducers/counterSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fontSize as f, colours as c } from "../constants/constants";
 
 
 export default function ProductDetail({ route, navigation }) {
-  const windowHeight = Dimensions.get("window").height;
-  const item = route.params?.item;
-  const { id, title, rating, price, description, image } = item || {};
-  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+  const windowHeight = Dimensions.get("window").height;
+  const routeItem = route.params?.item;
+  const [item, setItem] = useState(routeItem || {});
+  const { id, title, rating, price, description, image } = item;
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCacheWorking, setIsCacheWorking] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (routeItem) {
+        setItem(routeItem);
+        await AsyncStorage.setItem(`product_${routeItem.id}`, JSON.stringify(routeItem));
+      } else if (id) {
+        const cachedData = await AsyncStorage.getItem(`product_${id}`);
+        if (cachedData) {
+          setItem(JSON.parse(cachedData));
+        } else {
+          setItem({});
+        }
+      }
+    };
+    fetchData();
+  }, [routeItem, id]);
+
+
+  useEffect(() => {
+    const checkCache = async () => {
+      try {
+        const cachedData = await AsyncStorage.getItem(`product_${id}`);
+        if (cachedData) {
+          console.log("Cache is working. Retrieved data:", JSON.parse(cachedData));
+          setIsCacheWorking(true);
+        } else {
+          console.log("Cache is not working. No data found in cache.");
+          setIsCacheWorking(false);
+        }
+      } catch (error) {
+        console.error("Failed to check cache:", error);
+      }
+    };
+
+    checkCache();
+  }, [id]);
 
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -42,9 +82,9 @@ export default function ProductDetail({ route, navigation }) {
         fontSize: f.large,
       },
       swipeable: true,
-      bottomOffset:  windowHeight/3,
+      bottomOffset: windowHeight / 3,
       visibilityTime: 3000,
-      props: { style: { zIndex: 9999 } }, 
+      props: { style: { zIndex: 9999 } },
     });
   };
 

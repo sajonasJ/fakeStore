@@ -51,24 +51,25 @@ export default function ProductList({ route }) {
     setImageStatus((prevStatus) => ({ ...prevStatus, [id]: "loaded" }));
   };
 
-  useEffect(() => {
-    const checkCache = async () => {
-      try {
-        const cachedData = await AsyncStorage.getItem(`products_${category}`);
-        if (cachedData) {
-          console.log("Cache is working. Retrieved data:", JSON.parse(cachedData));
-          setIsCacheWorking(true);
-        } else {
-          console.log("Cache is not working. No data found in cache.");
-          setIsCacheWorking(false);
-        }
-      } catch (error) {
-        console.error("Failed to check cache:", error);
-      }
-    };
+  //! Temporary code for checking caching.
+  // useEffect(() => {
+  //   const checkCache = async () => {
+  //     try {
+  //       const cachedData = await AsyncStorage.getItem(`products_${category}`);
+  //       if (cachedData) {
+  //         console.log("Cache is working. Retrieved data:", JSON.parse(cachedData));
+  //         setIsCacheWorking(true);
+  //       } else {
+  //         console.log("Cache is not working. No data found in cache.");
+  //         setIsCacheWorking(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to check cache:", error);
+  //     }
+  //   };
 
-    checkCache();
-  }, [category]);
+  //   checkCache();
+  // }, [category]);
 
   return (
     <View style={styles.container}>
