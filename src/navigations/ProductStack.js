@@ -2,11 +2,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Category from "../screens/Category";
 import ProductList from "../screens/ProductList";
 import ProductDetail from "../screens/ProductDetail";
+import Toast from "react-native-toast-message";
 
 const ProductStack = createStackNavigator();
 
 export default function ProductStackScreen() {
+  
   return (
+    <>
     <ProductStack.Navigator>
       <ProductStack.Screen
         name="Category"
@@ -23,6 +26,9 @@ export default function ProductStackScreen() {
         component={ProductDetail}
         options={{ headerShown: false }}
       />
+
     </ProductStack.Navigator>
+    <Toast/>
+    </>
   );
 }

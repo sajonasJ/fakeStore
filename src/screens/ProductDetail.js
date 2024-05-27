@@ -46,24 +46,24 @@ export default function ProductDetail({ route, navigation }) {
   }, [routeItem, id]);
 
 
-  useEffect(() => {
-    const checkCache = async () => {
-      try {
-        const cachedData = await AsyncStorage.getItem(`product_${id}`);
-        if (cachedData) {
-          console.log("Cache is working. Retrieved data:", JSON.parse(cachedData));
-          setIsCacheWorking(true);
-        } else {
-          console.log("Cache is not working. No data found in cache.");
-          setIsCacheWorking(false);
-        }
-      } catch (error) {
-        console.error("Failed to check cache:", error);
-      }
-    };
-
-    checkCache();
-  }, [id]);
+//! Temporary function to check for caching
+  // useEffect(() => {
+  //   const checkCache = async () => {
+  //     try {
+  //       const cachedData = await AsyncStorage.getItem(`product_${id}`);
+  //       if (cachedData) {
+  //         console.log("Cache is working. Retrieved data:", JSON.parse(cachedData));
+  //         setIsCacheWorking(true);
+  //       } else {
+  //         console.log("Cache is not working. No data found in cache.");
+  //         setIsCacheWorking(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to check cache:", error);
+  //     }
+  //   };
+  //   checkCache();
+  // }, [id]);
 
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -84,7 +84,7 @@ export default function ProductDetail({ route, navigation }) {
       swipeable: true,
       bottomOffset: windowHeight / 3,
       visibilityTime: 1000,
-      props: { style: { zIndex: 9999 } },
+      props: { style: { zIndex: 19999 } },
     });
   };
 

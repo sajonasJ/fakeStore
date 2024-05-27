@@ -14,7 +14,7 @@ import Profile from "../screens/Profile";
 const Tabs = createBottomTabNavigator();
 
 export default function CategoryTabs() {
-  const count = useSelector(selectCount); // Get the count value from the Redux store
+  const count = useSelector(selectCount);
   const { isAuthenticated } = useSelector(selectAuth);
 
   return (

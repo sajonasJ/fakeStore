@@ -8,6 +8,7 @@ import { colours as c } from "./src/constants/constants";
 import CategoryTabs from "./src/navigations/CategoryTabs";
 import { PersistGate } from "redux-persist/integration/react";
 
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -36,7 +37,7 @@ export default function App() {
               />
             </Stack.Navigator>
           </NavigationContainer>
-          <Toast ref={(ref) => Toast.setRef(ref)} />
+          <Toast/>
         </PersistGate>
       </Provider>
     </>
