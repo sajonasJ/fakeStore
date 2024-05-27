@@ -83,7 +83,7 @@ export default function ProductDetail({ route, navigation }) {
       },
       swipeable: true,
       bottomOffset: windowHeight / 3,
-      visibilityTime: 3000,
+      visibilityTime: 1000,
       props: { style: { zIndex: 9999 } },
     });
   };
