@@ -7,6 +7,7 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import CsBtn from "../components/CsBtn";
 import { updateProfile, signOut, selectAuth } from "../reducers/authSlice";
 import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
@@ -23,6 +24,22 @@ export default function Profile({ navigation }) {
       setNewName(user.name || "");
     }
   }, [user]);
+
+  // Temporary Code to show persistence of data
+  // useEffect(() => {
+  //   const checkStorage = async () => {
+  //     try {
+  //       const keys = await AsyncStorage.getAllKeys();
+  //       const items = await AsyncStorage.multiGet(keys);
+  //       console.log('Stored items:', items);
+  //     } catch (error) {
+  //       console.error('Error reading AsyncStorage:', error);
+  //     }
+  //   };
+
+  //   checkStorage();
+  // }, []);
+
 
   useEffect(() => {
     if (!loading && isUpdating) {

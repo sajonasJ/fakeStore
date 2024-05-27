@@ -24,11 +24,11 @@ export default function CategoryTabs() {
         component={ProductStackScreen}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="menu" color="#4cc9f0" showBadge={false} />,
+          tabBarIcon: () => <TabIcon name="menu" color="rgba(0, 0, 0, 0.7)" showBadge={false} />,
           tabBarLabel: () => (
             <Text
               style={{
-                color: "#4cc9f0",
+                color: "rgba(0, 0, 0, 0.7)",
                 fontSize: 14,
                 fontWeight: "bold",
               }}
@@ -43,11 +43,11 @@ export default function CategoryTabs() {
         component={ShoppingCart}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="cart" color="green" showBadge={true} count={count} />,
+          tabBarIcon: () => <TabIcon name="cart" color="rgba(0, 128, 0, .7)" showBadge={true} count={count} />,
           tabBarLabel: () => (
             <Text
               style={{
-                color: "green",
+                color: "rgba(0, 128, 0, .7)",
                 fontSize: 14,
                 fontWeight: "bold",
               }}
@@ -62,11 +62,11 @@ export default function CategoryTabs() {
         component={Orders}
         options={{
           headerShown: false,
-          tabBarIcon: () => <TabIcon name="bag" color="red" showBadge={false} />,
+          tabBarIcon: () => <TabIcon name="bag" color="rgba(255, 0, 0, 0.7)" showBadge={false} />,
           tabBarLabel: () => (
             <Text
               style={{
-                color: "red",
+                color: "rgba(255, 0, 0, 0.7)",
                 fontSize: 14,
                 fontWeight: "bold",
               }}
@@ -82,11 +82,11 @@ export default function CategoryTabs() {
           component={Profile}
           options={{
             headerShown: false,
-            tabBarIcon: () => <TabIcon name="person-circle" color="blue" showBadge={false} />,
+            tabBarIcon: () => <TabIcon name="person-circle" color="rgba(0, 0, 255, 0.7)" showBadge={false} />,
             tabBarLabel: () => (
               <Text
                 style={{
-                  color: "blue",
+                  color: "rgba(0, 0, 255, 0.7)",
                   fontSize: 14,
                   fontWeight: "bold",
                 }}
@@ -102,11 +102,11 @@ export default function CategoryTabs() {
           component={AuthStack}
           options={{
             headerShown: false,
-            tabBarIcon: () => <TabIcon name="person-circle" color="blue" showBadge={false} />,
+            tabBarIcon: () => <TabIcon name="person-circle" color="rgba(0, 0, 255, 0.7)" showBadge={false} />,
             tabBarLabel: () => (
               <Text
                 style={{
-                  color: "blue",
+                  color: "rgba(0, 0, 255, 0.7)",
                   fontSize: 14,
                   fontWeight: "bold",
                 }}
