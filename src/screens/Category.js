@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { loadProductData, selectProduct } from "../reducers/productSlice";
 import Header from "../components/Header";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StatusBar,
   View,
@@ -49,6 +50,24 @@ export default function Category({ navigation }) {
       products: productsInCategory,
     });
   };
+
+    // TEMPORARY useEffect to check persisted state
+    // useEffect(() => {
+    //   console.log("Checking persisted state...");
+    //   // Assuming you have configured redux-persist correctly
+    //   AsyncStorage.getItem('persist:root')
+    //     .then((state) => {
+    //       if (state) {
+    //         const persistedState = JSON.parse(state);
+    //         console.log("Persisted state:", persistedState);
+    //       } else {
+    //         console.log("No persisted state found.");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error fetching persisted state:", error);
+    //     });
+    // }, []);
 
   return (
     <View style={styles.container}>
